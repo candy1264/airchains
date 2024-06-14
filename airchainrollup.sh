@@ -173,10 +173,38 @@ EOF
 
 #自动转账脚本#
 function transfer() {
-    sudo apt update
+    #!/bin/bash
+
+# 更新包信息
+sudo apt update
+
+# 检查 python3.10 是否已安装
+if ! dpkg-query -W python3.10; then
+    echo "Installing python3.10..."
     sudo apt install python3.10
+else
+    echo "python3.10 is already installed."
+fi
+
+# 检查 python3-pip 是否已安装
+if ! dpkg-query -W python3-pip; then
+    echo "Installing python3-pip..."
     sudo apt install python3-pip
-    pip install web3 --break-system-packages
+else
+    echo "python3-pip is already installed."
+fi
+
+# 使用 --break-system-packages 选项安装 web3
+pip install web3 --break-system-packages
+
+# 检查 python3-web3 是否已安装
+if ! dpkg-query -W python3-web3; then
+    echo "Installing python3-web3..."
+    sudo apt install python3-web3
+else
+    echo "python3-web3 is already installed."
+fi
+
 
     cat <<EOF > create_transfer_script.py
 import os
