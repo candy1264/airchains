@@ -283,8 +283,9 @@ function private_key(){
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
 
 }
-
-
+function check_avail_address(){
+journalctl -u availd |head 
+}
 # 主菜单
 function main_menu() {
     while true; do
@@ -302,6 +303,7 @@ function main_menu() {
         echo "3. 查看avail状态"
         echo "4. 查看tracks状态"
         echo "5. 导出所有私钥"
+        echo "6. 查看avail地址"
         read -p "请输入选项（1-11）: " OPTION
 
         case $OPTION in
@@ -310,6 +312,7 @@ function main_menu() {
         3) avail_log ;;
         4) tracks_log ;;
         5) private_key ;;
+        6)check_avail_address ;;
         *) echo "无效选项。" ;;
         esac
         echo "按任意键返回主菜单..."
