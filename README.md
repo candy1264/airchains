@@ -6,4 +6,4 @@
 
   脚本运行后按1启动，中间需要先领取air的gas amf
   安装完成按7备份所有私钥
-一键运行:wget -O airchainrollup.sh https://raw.githubusercontent.com/a3165458/Artela/main/Artela.sh && chmod +x airchainrollup.sh && ./airchainrollup.sh
+一键运行:wget -O airchainrollup.sh https://raw.githubusercontent.com/candy1264/airchains/main/airchainrollup.sh && chmod +x airchainrollup.sh && ./airchainrollup.sh
