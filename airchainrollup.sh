@@ -4,35 +4,13 @@ git clone https://github.com/airchains-network/evm-station.git
 mkdir -p /data/airchains/ && cd /data/airchains/
 git clone https://github.com/airchains-network/tracks.git
 cd /data/airchains/evm-station  && go mod tidy
-cd /data/airchains/evm-station
+/bin/bash ./scripts/local-setup.sh
 # 确保脚本路径正确
-if [ -f "./scripts/local-setup.sh" ]; then
-    # 编辑 local-setup.sh 文件
-    sed -i 's/original-text/replacement-text/' ./scripts/local-setup.sh
-else
-    echo "./scripts/local-setup.sh 文件不存在。"
-    exit 1
-fi
 
-# 编辑 app.toml 文件
-if [ -f "$HOME/.evmosd/config/app.toml" ]; then
-    sed -i 's/original-text/replacement-text/' $HOME/.evmosd/config/app.toml
-else
-    echo "$HOME/.evmosd/config/app.toml 文件不存在。"
-    exit 1
-fi
-
-# 执行脚本
-if [ -f "./scripts/local-setup.sh" ]; then
-    /bin/bash ./scripts/local-setup.sh
-else
-    echo "./scripts/local-setup.sh 文件不存在。"
-    exit 1
-fi
 
     #自定义CHAINID和MONIKER,默认填写了node，不知道可不可以用同一个名字#
-    sed -i.bak 's@CHAINID="{CHAIN_ID:-testname_1234-1}"@CHAINID="{CHAIN_ID:-node_1234-1}"@' ~./scripts/local-setup.sh
-    sed -i.bak 's@MONIKER="TESTNAME"@MONIKER="node"@' ~./scripts/local-setup.sh
+    sed -i.bak 's@CHAINID="{CHAIN_ID:-testname_1234-1}"@CHAINID="{CHAIN_ID:-node_1234-1}"@' /data/airchains/evm-station/scripts/local-setup.sh
+    sed -i.bak 's@MONIKER="TESTNAME"@MONIKER="node"@' /data/airchains/evm-station/scripts/local-setup.sh
     #把json-rpc监听地址改为0.0.0.0#
     sed -i.bak 's@address = "127.0.0.1:8545"@address = "0.0.0.0:8545"@' ~/.evmosd/config/app.toml
     #修改 — chain-id 为 上一步自定义的CHAINID，默认填写了node，保留1234-1#
