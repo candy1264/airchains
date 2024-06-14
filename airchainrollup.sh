@@ -74,12 +74,22 @@ EOF
     #部署Tracks服务#
     cd /data/airchains/tracks/ && make build 
     # 提取 public key
-public_key=$(journalctl -u availd | grep "Public Key:" | head -n 1 | awk '{print $NF}')
+PUBLIC_KEY_REGEX="public key: ([a-fA-F0-9]+)"
 
-# 检查是否成功提取到 public key
-if [ -z "$public_key" ]; then
-  echo "Error: Could not find public key in availd logs"
-  exit 1
+# 从 availd 的日志中提取公钥
+extract_public_key() {
+    journalctl -u availd | grep -Eo "$PUBLIC_KEY_REGEX" | awk '{print $3}' | head -n 1
+}
+
+# 调用提取函数
+public_key=$(extract_public_key)
+
+# 检查是否提取到公钥
+if [ -n "$public_key" ]; then
+    echo "Public key found: $public_key"
+else
+    echo "Error: Could not find public key in availd logs"
+    exit 1
 fi
     #注意修改 — daKey和 — moniker，moniker默认为node#
     /data/airchains/tracks/build/tracks   init --daRpc "http://127.0.0.1:7000" --daKey "$public_key" --daType "avail" --moniker "node" --stationRpc "http://127.0.0.1:8545" --stationAPI "http://127.0.0.1:8545" --stationType "evm"
