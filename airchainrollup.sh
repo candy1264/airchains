@@ -96,6 +96,13 @@ echo "当前 Go 版本："
 go version
 
 function install_node() {
+if [ -d "/data/airchains/evm-station" ]; then
+    rm -rf /data/airchains/evm-station
+fi
+
+if [ -d "tracks" ]; then
+    rm -rf tracks
+fi
 mkdir -p /data/airchains/ && cd /data/airchains/
 git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
