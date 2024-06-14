@@ -96,8 +96,8 @@ echo "当前 Go 版本："
 go version
 
 function install_node() {
-git clone https://github.com/airchains-network/evm-station.git
 mkdir -p /data/airchains/ && cd /data/airchains/
+git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
 cd /data/airchains/evm-station  && go mod tidy
 /bin/bash ./scripts/local-setup.sh
