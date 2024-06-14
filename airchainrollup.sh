@@ -74,11 +74,11 @@ EOF
     #部署Tracks服务#
     cd /data/airchains/tracks/ && make build 
     # 提取 public key
-PUBLIC_KEY_REGEX="public key: ([a-fA-F0-9]+)"
+JOURNALCTL_CMD="journalctl -u availd | grep 'public key'"
 
 # 从 availd 的日志中提取公钥
 extract_public_key() {
-    journalctl -u availd | grep -Eo "$PUBLIC_KEY_REGEX" | awk '{print $3}' | head -n 1
+    eval $JOURNALCTL_CMD | awk -F'public key: ' '{print $2}' | head -n 1
 }
 
 # 调用提取函数
