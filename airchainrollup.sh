@@ -1,12 +1,57 @@
 
 function install_node() {
-    mkdir -p /data/airchains/ && cd /data/airchains/
-    
-    it clone https://github.com/airchains-network/evm-station.git
-    
-    git clone https://github.com/airchains-network/tracks.git
-    #设置并运行EVM-Station#
-    cd /data/airchains/evm-station  && go mod tidy
+    #!/bin/bash
+
+# 停止脚本并在命令失败时退出
+set -e
+
+# 检查并安装依赖项
+if ! command -v git &> /dev/null
+then
+    echo "Git 未安装，正在安装..."
+    apt-get update && apt-get install -y git
+fi
+
+# 克隆 repo，如果已经存在则不再克隆
+if [ ! -d "tracks" ]; then
+    git clone https://github.com/username/repo.git tracks
+else
+    echo "目录 'tracks' 已存在，跳过克隆步骤。"
+fi
+
+# 确保目标目录存在
+if [ -d "/data/airchains/evm-station" ]; then
+    cd /data/airchains/evm-station
+else
+    echo "/data/airchains/evm-station 目录不存在。"
+    exit 1
+fi
+
+# 确保脚本路径正确
+if [ -f "./scripts/local-setup.sh" ]; then
+    # 编辑 local-setup.sh 文件
+    sed -i 's/original-text/replacement-text/' ./scripts/local-setup.sh
+else
+    echo "./scripts/local-setup.sh 文件不存在。"
+    exit 1
+fi
+
+# 编辑 app.toml 文件
+if [ -f "$HOME/.evmosd/config/app.toml" ]; then
+    sed -i 's/original-text/replacement-text/' $HOME/.evmosd/config/app.toml
+else
+    echo "$HOME/.evmosd/config/app.toml 文件不存在。"
+    exit 1
+fi
+
+# 执行脚本
+if [ -f "./scripts/local-setup.sh" ]; then
+    /bin/bash ./scripts/local-setup.sh
+else
+    echo "./scripts/local-setup.sh 文件不存在。"
+    exit 1
+fi
+
     #自定义CHAINID和MONIKER,默认填写了node，不知道可不可以用同一个名字#
     sed -i.bak 's@CHAINID="{CHAIN_ID:-testname_1234-1}"@CHAINID="{CHAIN_ID:-node_1234-1}"@' ~./scripts/local-setup.sh
     sed -i.bak 's@MONIKER="TESTNAME"@MONIKER="node"@' ~./scripts/local-setup.sh
