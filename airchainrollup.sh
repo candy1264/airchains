@@ -312,7 +312,7 @@ function main_menu() {
         3) avail_log ;;
         4) tracks_log ;;
         5) private_key ;;
-        6)check_avail_address ;;
+        6) check_avail_address ;;
         *) echo "无效选项。" ;;
         esac
         echo "按任意键返回主菜单..."
