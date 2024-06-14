@@ -1,31 +1,8 @@
 
 function install_node() {
-    #!/bin/bash
-
-# 停止脚本并在命令失败时退出
-set -e
-
-# 检查并安装依赖项
-if ! command -v git &> /dev/null
-then
-    echo "Git 未安装，正在安装..."
-    apt-get update && apt-get install -y git
-fi
-
-# 克隆 repo，如果已经存在则不再克隆
-if [ ! -d "tracks" ]; then
-    git clone https://github.com/username/repo.git tracks
-else
-    echo "目录 'tracks' 已存在，跳过克隆步骤。"
-fi
-
-# 确保目标目录存在
-if [ -d "/data/airchains/evm-station" ]; then
-    cd /data/airchains/evm-station
-else
-    echo "/data/airchains/evm-station 目录不存在。"
-    exit 1
-fi
+    mkdir -p /data/airchains/ && cd /data/airchains/
+    git clone https://github.com/airchains-network/evm-station.git
+    git clone https://github.com/airchains-network/tracks.git
 
 # 确保脚本路径正确
 if [ -f "./scripts/local-setup.sh" ]; then
