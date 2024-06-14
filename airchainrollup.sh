@@ -4,7 +4,7 @@ git clone https://github.com/airchains-network/evm-station.git
 mkdir -p /data/airchains/ && cd /data/airchains/
 git clone https://github.com/airchains-network/tracks.git
 cd /data/airchains/evm-station  && go mod tidy
-
+cd /data/airchains/evm-station
 # 确保脚本路径正确
 if [ -f "./scripts/local-setup.sh" ]; then
     # 编辑 local-setup.sh 文件
