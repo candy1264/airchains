@@ -1,3 +1,99 @@
+#!/bin/bash
+
+# 检查是否已安装 build-essential
+if dpkg-query -W build-essential >/dev/null 2>&1; then
+    echo "build-essential 已安装，跳过安装步骤。"
+else
+    echo "安装 build-essential..."
+    sudo apt update
+    sudo apt install -y build-essential
+fi
+
+# 检查是否已安装 git
+if dpkg-query -W git >/dev/null 2>&1; then
+    echo "git 已安装，跳过安装步骤。"
+else
+    echo "安装 git..."
+    sudo apt update
+    sudo apt install -y git
+fi
+
+# 检查是否已安装 make
+if dpkg-query -W make >/dev/null 2>&1; then
+    echo "make 已安装，跳过安装步骤。"
+else
+    echo "安装 make..."
+    sudo apt update
+    sudo apt install -y make
+fi
+
+# 检查是否已安装 jq
+if dpkg-query -W jq >/dev/null 2>&1; then
+    echo "jq 已安装，跳过安装步骤。"
+else
+    echo "安装 jq..."
+    sudo apt update
+    sudo apt install -y jq
+fi
+
+# 检查是否已安装 curl
+if dpkg-query -W curl >/dev/null 2>&1; then
+    echo "curl 已安装，跳过安装步骤。"
+else
+    echo "安装 curl..."
+    sudo apt update
+    sudo apt install -y curl
+fi
+
+# 检查是否已安装 clang
+if dpkg-query -W clang >/dev/null 2>&1; then
+    echo "clang 已安装，跳过安装步骤。"
+else
+    echo "安装 clang..."
+    sudo apt update
+    sudo apt install -y clang
+fi
+
+# 检查是否已安装 pkg-config
+if dpkg-query -W pkg-config >/dev/null 2>&1; then
+    echo "pkg-config 已安装，跳过安装步骤。"
+else
+    echo "安装 pkg-config..."
+    sudo apt update
+    sudo apt install -y pkg-config
+fi
+
+# 检查是否已安装 libssl-dev
+if dpkg-query -W libssl-dev >/dev/null 2>&1; then
+    echo "libssl-dev 已安装，跳过安装步骤。"
+else
+    echo "安装 libssl-dev..."
+    sudo apt update
+    sudo apt install -y libssl-dev
+fi
+
+# 检查是否已安装 wget
+if dpkg-query -W wget >/dev/null 2>&1; then
+    echo "wget 已安装，跳过安装步骤。"
+else
+    echo "安装 wget..."
+    sudo apt update
+    sudo apt install -y wget
+fi
+
+# 检查是否已安装 go
+if command -v go >/dev/null 2>&1; then
+    echo "go 已安装，跳过安装步骤。"
+else
+    echo "下载并安装 Go..."
+    wget -c https://golang.org/dl/go1.22.3.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+    source ~/.bashrc
+fi
+
+# 验证安装后的 Go 版本
+echo "当前 Go 版本："
+go version
 
 function install_node() {
 git clone https://github.com/airchains-network/evm-station.git
