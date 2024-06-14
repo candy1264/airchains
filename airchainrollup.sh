@@ -1,5 +1,6 @@
 
 function install_node() {
+
     mkdir -p /data/airchains/ && cd /data/airchains/
     git clone https://github.com/airchains-network/evm-station.git
     git clone https://github.com/airchains-network/tracks.git
