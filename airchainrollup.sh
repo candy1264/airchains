@@ -110,7 +110,6 @@ cd /data/airchains/evm-station  && go mod tidy
     #把json-rpc监听地址改为0.0.0.0#
     sed -i.bak 's@address = "127.0.0.1:8545"@address = "0.0.0.0:8545"@' ~/.evmosd/config/app.toml
     #修改 — chain-id 为 上一步自定义的CHAINID，默认填写了node，保留1234-1#
-    /bin/bash ./scripts/local-setup.sh
     cat > /etc/systemd/system/evmosd.service << EOF
 [Unit]
 Description=evmosd node
