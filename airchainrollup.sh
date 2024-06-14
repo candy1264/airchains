@@ -1,7 +1,9 @@
 
 function install_node() {
     mkdir -p /data/airchains/ && cd /data/airchains/
+    
     it clone https://github.com/airchains-network/evm-station.git
+    
     git clone https://github.com/airchains-network/tracks.git
     #设置并运行EVM-Station#
     cd /data/airchains/evm-station  && go mod tidy
