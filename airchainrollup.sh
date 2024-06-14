@@ -112,8 +112,18 @@ cd /data/airchains/evm-station  && go mod tidy
 
 
     #自定义CHAINID和MONIKER,默认填写了node，不知道可不可以用同一个名字#
-    sed -i.bak 's@CHAINID="{CHAIN_ID:-testname_1234-1}"@CHAINID="{CHAIN_ID:-node_1234-1}"@' /data/airchains/evm-station/scripts/local-setup.sh
-    sed -i.bak 's@MONIKER="TESTNAME"@MONIKER="node"@' /data/airchains/evm-station/scripts/local-setup.sh
+    # 提示用户输入新的 CHAIN_ID
+read -p "Enter new CHAIN_ID (default: name_1234-1): " CHAIN_ID
+CHAIN_ID=${CHAIN_ID:-name_1234-1}  # 设置默认值
+
+# 提示用户输入新的 MONIKER
+read -p "Enter new MONIKER (default: name): " MONIKER
+MONIKER=${MONIKER:-name}  # 设置默认值
+   # 修改 local-setup.sh 文件中的 CHAINID
+sed -i.bak "s@CHAINID=\"{CHAIN_ID:-testname_1234-1}\"@CHAINID=\"{CHAIN_ID:-$CHAIN_ID}\"@" /data/airchains/evm-station/scripts/local-setup.sh
+
+# 修改 local-setup.sh 文件中的 MONIKER
+sed -i.bak "s@MONIKER=\"TESTNAME\"@MONIKER=\"$MONIKER\"@" /data/airchains/evm-station/scripts/local-setup.sh
     #把json-rpc监听地址改为0.0.0.0#
     sed -i.bak 's@address = "127.0.0.1:8545"@address = "0.0.0.0:8545"@' ~/.evmosd/config/app.toml
     #修改 — chain-id 为 上一步自定义的CHAINID，默认填写了node，保留1234-1#
@@ -124,7 +134,7 @@ After=network-online.target
 [Service]
 User=root
 WorkingDirectory=/root/.evmosd
-ExecStart=/data/airchains/evm-station/build/station-evm start --metrics "" --log_level "info" --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "node_1234-1"
+ExecStart=/data/airchains/evm-station/build/station-evm start --metrics "" --log_level "info" --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "$CHAIN_ID"
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
@@ -196,7 +206,7 @@ else
     exit 1
 fi
     #注意修改 — daKey和 — moniker，moniker默认为node#
-    /data/airchains/tracks/build/tracks init --daRpc "http://127.0.0.1:7000" --daKey "$public_key" --daType "avail" --moniker "node" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
+    /data/airchains/tracks/build/tracks init --daRpc "http://127.0.0.1:7000" --daKey "$public_key" --daType "avail" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
     #生成airchains钱包#
     /data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
     
