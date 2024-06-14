@@ -172,39 +172,35 @@ EOF
 
 
 #自动转账脚本#
-function transfer() {
-    #!/bin/bash
+#!/bin/bash
 
-# 更新包信息
-sudo apt update
-
-# 检查 python3.10 是否已安装
-if ! dpkg-query -W python3.10; then
-    echo "Installing python3.10..."
-    sudo apt install python3.10
+# 检查 python3-venv 是否已安装
+if dpkg-query -W python3-venv >/dev/null 2>&1; then
+    echo "python3-venv 已安装，跳过安装步骤。"
 else
-    echo "python3.10 is already installed."
+    echo "安装 python3-venv..."
+    sudo apt update
+    sudo apt install -y python3-venv
 fi
 
-# 检查 python3-pip 是否已安装
-if ! dpkg-query -W python3-pip; then
-    echo "Installing python3-pip..."
-    sudo apt install python3-pip
+# 创建并激活虚拟环境
+if [ ! -d "venv" ]; then
+    python3 -m venv venv
+fi
+source venv/bin/activate
+
+# 检查 web3 是否已安装
+if python -c "import web3" >/dev/null 2>&1; then
+    echo "web3 已安装，跳过安装步骤。"
 else
-    echo "python3-pip is already installed."
+    echo "安装 web3..."
+    pip install web3
 fi
 
-# 使用 --break-system-packages 选项安装 web3
-pip install web3 --break-system-packages
+# 验证 web3 安装
+python -c "import web3; print('web3 版本:', web3.__version__)"
 
-# 检查 python3-web3 是否已安装
-if ! dpkg-query -W python3-web3; then
-    echo "Installing python3-web3..."
-    sudo apt install python3-web3
-else
-    echo "python3-web3 is already installed."
-fi
-
+python -c "import web3; print(web3.__version__)"
 
     cat <<EOF > create_transfer_script.py
 import os
