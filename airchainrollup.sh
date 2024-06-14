@@ -175,7 +175,7 @@ EOF
     systemctl restart availd 
     journalctl -u availd |head
     #部署Tracks服务#
-    cd /data/airchains/tracks/ && make build 
+cd /data/airchains/tracks/ && make build 
     # 提取 public key
 JOURNALCTL_CMD="journalctl -u availd | grep 'public key'"
 
@@ -239,7 +239,19 @@ TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
 # 运行 tracks create-station 命令
-/data/airchains/tracks/build/tracks create-station --accountName node --accountPath $HOME/.tracks/junction-accounts/keys --jsonRPC "$JSON_RPC" --info "$INFO" --tracks "$AIR_ADDRESS" --bootstrapNode "$BOOTSTRAP_NODE"
+create_station_cmd="/data/airchains/tracks/build/tracks create-station \
+    --accountName node \
+    --accountPath $HOME/.tracks/junction-accounts/keys \
+    --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
+    --info \"EVM Track\" \
+    --tracks \"$AIR_ADDRESS\" \
+    --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$node_id\""
+
+echo "Running command:"
+echo "$create_station_cmd"
+
+# 执行命令
+eval "$create_station_cmd"
 cd /data/airchains/tracks/ && make build
     #把Tracks加入守护进程并启动#
     cat > /etc/systemd/system/tracksd.service << EOF
