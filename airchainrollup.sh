@@ -255,14 +255,6 @@ EOF
     systemctl daemon-reload
     systemctl enable tracksd
     systemctl restart tracksd
-    #查看助记词#
-    #evmosd#
-    /bin/bash ./scripts/local-setup.sh
-    /bin/bash ./scripts/local-keys.sh
-    #avail#
-    cat /root/.avail/identity/identity.toml
-    #airchian#
-    cat $HOME/.tracks/junction-accounts/keys node.wallet.json
 }
 
 function evmos_log(){
