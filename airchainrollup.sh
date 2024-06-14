@@ -1,9 +1,8 @@
 
 function install_node() {
-
-    mkdir -p /data/airchains/ && cd /data/airchains/
-    git clone https://github.com/airchains-network/evm-station.git
-    git clone https://github.com/airchains-network/tracks.git
+git clone https://github.com/airchains-network/evm-station.git
+mkdir -p /data/airchains/ && cd /data/airchains/
+git clone https://github.com/airchains-network/tracks.git
 
 # 确保脚本路径正确
 if [ -f "./scripts/local-setup.sh" ]; then
