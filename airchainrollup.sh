@@ -112,13 +112,14 @@ cd /data/airchains/evm-station  && go mod tidy
 
 
     #自定义CHAINID和MONIKER,默认填写了node，不知道可不可以用同一个名字#
-    # 提示用户输入新的 CHAIN_ID
-read -p "Enter new CHAIN_ID (default: name_1234-1): " CHAIN_ID
+# 提示用户输入新的 CHAIN_ID
+read -p "Enter new CHAIN_ID (default: 你想输入的名字加上_1234-1): " CHAIN_ID
 CHAIN_ID=${CHAIN_ID:-name_1234-1}  # 设置默认值
 
 # 提示用户输入新的 MONIKER
-read -p "Enter new MONIKER (default: name): " MONIKER
+read -p "Enter new MONIKER (default: 上面的名字): " MONIKER
 MONIKER=${MONIKER:-name}  # 设置默认值
+
    # 修改 local-setup.sh 文件中的 CHAINID
 sed -i.bak "s@CHAINID=\"{CHAIN_ID:-testname_1234-1}\"@CHAINID=\"{CHAIN_ID:-$CHAIN_ID}\"@" /data/airchains/evm-station/scripts/local-setup.sh
 
