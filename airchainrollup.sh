@@ -173,6 +173,9 @@ EOF
 
 #自动转账脚本#
 function transfer() {
+    sudo apt update
+    sudo apt install python3.10
+    sudo apt install python3-pip
     pip install web3
 
     cat <<EOF > create_transfer_script.py
