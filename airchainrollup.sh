@@ -328,7 +328,7 @@ function tracks_log(){
 }
 function private_key(){
     #evmos私钥#
-    /bin/bash ./scripts/local-keys.sh
+    /bin/bash /data/airchains/evm-station/scripts/scripts/local-keys.sh
     #avail助记词#
     cat /root/.avail/identity/identity.toml
     #airchain助记词#
