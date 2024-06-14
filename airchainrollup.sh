@@ -250,7 +250,7 @@ BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
 # 运行 tracks create-station 命令
 create_station_cmd="/data/airchains/tracks/build/tracks create-station \
-    --accountName $MONIKER \
+    --accountName wallet \
     --accountPath $HOME/.tracks/junction-accounts/keys \
     --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
     --info \"EVM Track\" \
