@@ -1,7 +1,4 @@
-    apt update && apt install build-essential git make jq curl clang pkg-config libssl-dev -y 
-    wget -c https://golang.org/dl/go1.22.3.linux-amd64.tar.gz  -O - | sudo tar -xz -C /usr/local
-    echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile && source /etc/profile
-    go version
+
 function install_node() {
     mkdir -p /data/airchains/ && cd /data/airchains/
     it clone https://github.com/airchains-network/evm-station.git
