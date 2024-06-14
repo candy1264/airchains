@@ -233,7 +233,7 @@ BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
 # 运行 tracks create-station 命令
 /data/airchains/tracks/build/tracks create-station --accountName node --accountPath $HOME/.tracks/junction-accounts/keys --jsonRPC "$JSON_RPC" --info "$INFO" --tracks "$AIR_ADDRESS" --bootstrapNode "$BOOTSTRAP_NODE"
-
+cd /data/airchains/tracks/ && make build
     #把Tracks加入守护进程并启动#
     cat > /etc/systemd/system/tracksd.service << EOF
 [Unit]
