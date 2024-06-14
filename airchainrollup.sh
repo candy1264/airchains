@@ -169,180 +169,6 @@ EOF
     cat $HOME/.tracks/junction-accounts/keys node.wallet.json
 }
 
-
-
-#自动转账脚本#
-#!/bin/bash
-
-# 检查 python3-venv 是否已安装
-if dpkg-query -W python3-venv >/dev/null 2>&1; then
-    echo "python3-venv 已安装，跳过安装步骤。"
-else
-    echo "安装 python3-venv..."
-    sudo apt update
-    sudo apt install -y python3-venv
-fi
-
-# 创建并激活虚拟环境
-if [ ! -d "venv" ]; then
-    python3 -m venv venv
-fi
-source venv/bin/activate
-
-# 检查 web3 是否已安装
-if python -c "import web3" >/dev/null 2>&1; then
-    echo "web3 已安装，跳过安装步骤。"
-else
-    echo "安装 web3..."
-    pip install web3
-fi
-
-# 验证 web3 安装
-python -c "import web3; print('web3 版本:', web3.__version__)"
-
-python -c "import web3; print(web3.__version__)"
-
-    cat <<EOF > create_transfer_script.py
-import os
-import subprocess
-
-def generate_transfer_script():
-    # 设置文件路径
-    keyring_test_dir = os.path.expanduser("~/.evmosd/keyring-test")
-
-    # 获取 .address 文件名
-    address_files = [f for f in os.listdir(keyring_test_dir) if f.endswith('.address')]
-
-    # 确保有 .address 文件
-    if not address_files:
-        raise FileNotFoundError("No .address files found in the keyring-test directory")
-
-    # 取第一个 .address 文件作为示例
-    address_filename = address_files[0]
-    address_path = os.path.join(keyring_test_dir, address_filename)
-
-    # 读取地址文件内容
-    with open(address_path, "r") as f:
-        sender_address = f.read().strip()
-
-    # 处理文件名得到接收者地址（去掉 .address 后缀并加上 0x 前缀）
-    receiver_address = "0x" + address_filename.replace(".address", "")
-
-    # 运行 local-keys.sh 脚本获取私钥
-    result = subprocess.run(["/bin/bash", "./scripts/local-keys.sh"], capture_output=True, text=True)
-
-    # 检查脚本是否成功运行
-    if result.returncode != 0:
-        print("Error running local-keys.sh script")
-        print(result.stderr)
-        return None, None, None
-
-    # 假设私钥在脚本输出的某一行中
-    sender_private_key = result.stdout.strip().split()[-1]
-
-    # 返回必要的信息
-    return sender_address, sender_private_key, receiver_address
-
-def create_transfer_file(sender_address, sender_private_key, receiver_address, filename="transfer.py"):
-    # 自定义配置
-    rpc_url = "http://127.0.0.1:8545"  # 自定义的 RPC URL
-    chain_id = 1234  # 自定义的链 ID
-    amount = 1000000  # 转账金额（示例为 1个币）
-
-    # 定义要写入 transfer.py 文件的内容
-    file_content = f"""
-from web3 import Web3
-import time
-
-# 自定义配置
-rpc_url = "{rpc_url}"  # 自定义的 RPC URL
-chain_id = {chain_id}  # 自定义的链 ID
-
-# 钱包地址和私钥
-sender_address = "{sender_address}"  # 发送者钱包地址
-sender_private_key = "{sender_private_key}"  # 发送者钱包的私钥
-
-# 接收者钱包地址和转账金额（以最小单位表示）
-receiver_address = "{receiver_address}"  # 接收者钱包地址
-amount = {amount}  # 转账金额（示例为 1个币）
-
-def main():
-    while True:
-        try:
-            # 创建 Web3 实例
-            web3 = Web3(Web3.HTTPProvider(rpc_url))
-
-            # 检查是否成功连接到节点
-            if web3.isConnected():
-                print("成功连接到以太坊节点")
-            else:
-                print("无法连接到以太坊节点")
-                exit(1)
-
-            # 构建交易对象
-            transaction = {{
-                "to": receiver_address,
-                "value": amount,
-                "gas": 21000,  # 设置默认的 gas 数量
-                "gasPrice": web3.toWei(50, "gwei"),  # 设置默认的 gas 价格
-                "nonce": web3.eth.getTransactionCount(sender_address),
-                "chainId": chain_id,
-            }}
-
-            # 签名交易
-            signed_txn = web3.eth.account.signTransaction(transaction, sender_private_key)
-
-            # 发送交易
-            tx_hash = web3.eth.sendRawTransaction(signed_txn.rawTransaction)
-
-            # 等待交易确认
-            tx_receipt = web3.eth.waitForTransactionReceipt(tx_hash)
-
-            # 输出交易结果
-            print("Transaction Hash:", tx_receipt.transactionHash.hex())
-            print("Gas Used:", tx_receipt.gasUsed)
-            print("Status:", tx_receipt.status)
-
-            # 等待一段时间后再发送下一笔交易
-            print("等待10秒钟...")
-            time.sleep(10)
-
-        except Exception as e:
-            print("发生异常:", e)
-            print("等待10秒钟后继续...")
-            time.sleep(10)
-            continue
-
-if __name__ == "__main__":
-    main()
-"""
-
-    # 创建并写入 transfer.py 文件
-    with open(filename, "w") as file:
-        file.write(file_content)
-
-    print(f"{filename} 文件已创建并写入内容。")
-
-if __name__ == "__main__":
-    sender_address, sender_private_key, receiver_address = generate_transfer_script()
-    if sender_address and sender_private_key and receiver_address:
-        create_transfer_file(sender_address, sender_private_key, receiver_address)
-    else:
-        print("无法生成交易脚本。请检查配置。")
-EOF
-        
-python create_transfer_script.py
-screen -S transfer_session -dm python3 transfer.py
-
-
-
-}
-
-
-function transfer_log(){
-    screen -r transfer_session
-}
-
 function evmos_log(){
     journalctl -u evmosd -f
 }
@@ -377,22 +203,18 @@ function main_menu() {
         echo "退出脚本，请按键盘ctrl c退出即可"
         echo "请选择要执行的操作:"
         echo "1. 安装节点"
-        echo "2. 安装自动转账脚本"
-        echo "3. 查看转账脚本是否正常运行（按CTRL+AD退出）"
-        echo "4. 查看evmos状态"
-        echo "5. 查看avail状态"
-        echo "6. 查看tracks状态"
-        echo "7. 导出所有私钥"
+        echo "2. 查看evmos状态"
+        echo "3. 查看avail状态"
+        echo "4. 查看tracks状态"
+        echo "5. 导出所有私钥"
         read -p "请输入选项（1-11）: " OPTION
 
         case $OPTION in
         1) install_node ;;
-        2) transfer ;;
-        3) transfer_log ;;
-        4) evmos_log ;;
-        5) avail_log ;;
-        6) tracks_log ;;
-        7) private_key ;;
+        2) evmos_log ;;
+        3) avail_log ;;
+        4) tracks_log ;;
+        5) private_key ;;
         *) echo "无效选项。" ;;
         esac
         echo "按任意键返回主菜单..."
