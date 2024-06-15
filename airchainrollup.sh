@@ -108,10 +108,10 @@ git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
 
 cd /data/airchains/evm-station  && go mod tidy
-/bin/bash ./scripts/local-setup.sh
-# 确保脚本路径正确
 
+# 确保脚本路径正确
 nano ./scripts/local-setup.sh
+/bin/bash ./scripts/local-setup.sh
 
     #把json-rpc监听地址改为0.0.0.0#
     sed -i.bak 's@address = "127.0.0.1:8545"@address = "0.0.0.0:8545"@' ~/.evmosd/config/app.toml
