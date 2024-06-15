@@ -117,7 +117,7 @@ nano ./scripts/local-setup.sh
     sed -i.bak 's@address = "127.0.0.1:8545"@address = "0.0.0.0:8545"@' ~/.evmosd/config/app.toml
     #修改 — chain-id 为 上一步自定义的CHAINID，默认填写了node，保留1234-1#
     # 提示用户输入 CHAIN_ID
-read -p "Enter new CHAIN_ID (default: 重复上面修改文档的CHAIN ID): " CHAIN_ID
+read -p "Enter new CHAIN_ID (default: 重复上面修改文档的CHAIN ID 名字加_1234-1): " CHAIN_ID
 CHAIN_ID=${CHAIN_ID:-name_1234-1}  # 设置默认值
 
     cat > /etc/systemd/system/evmosd.service << EOF
