@@ -106,8 +106,6 @@ fi
 mkdir -p /data/airchains/ && cd /data/airchains/
 git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
-docker run -d --name airchains ubuntu:20.04 sleep infinity
-docker exec -it airchains bash
 cd /data/airchains/evm-station  && go mod tidy
 /bin/bash ./scripts/local-setup.sh
 # 确保脚本路径正确
