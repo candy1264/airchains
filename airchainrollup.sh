@@ -301,6 +301,22 @@ function private_key(){
 function check_avail_address(){
 journalctl -u availd |head 
 }
+
+function delete_node(){
+rm -rf data
+rm -rf .evmosd
+rm -rf .avail
+rm -rf .tracks
+sudo systemctl stop availd.service
+sudo systemctl stop evmosd.service
+sudo systemctl stop tracksd.service
+sudo systemctl disable availd.service
+sudo systemctl disable evmosd.service
+sudo systemctl disable tracksd.service
+sudo pkill -9 availd
+sudo pkill -9 evmosd
+sudo pkill -9 tracksd
+}
 # 主菜单
 function main_menu() {
     while true; do
@@ -319,6 +335,7 @@ function main_menu() {
         echo "4. 查看tracks状态"
         echo "5. 导出所有私钥"
         echo "6. 查看avail地址"
+        echo "7. 删除节点"
         read -p "请输入选项（1-11）: " OPTION
 
         case $OPTION in
@@ -328,6 +345,7 @@ function main_menu() {
         4) tracks_log ;;
         5) private_key ;;
         6) check_avail_address ;;
+        7) delete_node ;;
         *) echo "无效选项。" ;;
         esac
         echo "按任意键返回主菜单..."
