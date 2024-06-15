@@ -106,6 +106,7 @@ fi
 mkdir -p /data/airchains/ && cd /data/airchains/
 git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
+
 cd /data/airchains/evm-station  && go mod tidy
 /bin/bash ./scripts/local-setup.sh
 # 确保脚本路径正确
