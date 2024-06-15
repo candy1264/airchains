@@ -106,28 +106,21 @@ fi
 mkdir -p /data/airchains/ && cd /data/airchains/
 git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
+docker run -d --name airchains ubuntu:20.04 sleep infinity
+docker exec -it airchains bash
 cd /data/airchains/evm-station  && go mod tidy
 /bin/bash ./scripts/local-setup.sh
 # 确保脚本路径正确
 
+nano ./scripts/local-setup.sh
 
-    #自定义CHAINID和MONIKER,默认填写了node，不知道可不可以用同一个名字#
-# 提示用户输入新的 CHAIN_ID
-read -p "Enter new CHAIN_ID (default: 你想输入的名字加上_1234-1): " CHAIN_ID
-CHAIN_ID=${CHAIN_ID:-name_1234-1}  # 设置默认值
-
-# 提示用户输入新的 MONIKER
-read -p "Enter new MONIKER (default: 上面的名字): " MONIKER
-MONIKER=${MONIKER:-name}  # 设置默认值
-
-   # 修改 local-setup.sh 文件中的 CHAINID
-sed -i.bak "s@CHAINID=\"{CHAIN_ID:-testname_1234-1}\"@CHAINID=\"{CHAIN_ID:-$CHAIN_ID}\"@" /data/airchains/evm-station/scripts/local-setup.sh
-
-# 修改 local-setup.sh 文件中的 MONIKER
-sed -i.bak "s@MONIKER=\"TESTNAME\"@MONIKER=\"$MONIKER\"@" /data/airchains/evm-station/scripts/local-setup.sh
     #把json-rpc监听地址改为0.0.0.0#
     sed -i.bak 's@address = "127.0.0.1:8545"@address = "0.0.0.0:8545"@' ~/.evmosd/config/app.toml
     #修改 — chain-id 为 上一步自定义的CHAINID，默认填写了node，保留1234-1#
+    # 提示用户输入 CHAIN_ID
+read -p "Enter new CHAIN_ID (default: 重复上面修改文档的CHAIN ID): " CHAIN_ID
+CHAIN_ID=${CHAIN_ID:-name_1234-1}  # 设置默认值
+
     cat > /etc/systemd/system/evmosd.service << EOF
 [Unit]
 Description=evmosd node
