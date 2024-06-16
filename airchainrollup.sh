@@ -135,12 +135,13 @@ fi
 # 验证安装后的 Go 版本
 echo "当前 Go 版本："
 go version
-
+docker run -d --name airchains ubuntu:20.04 sleep infinity
+docker exec -it airchains bash << EOF
 
 
 function install_node() {
-docker run -d --name airchains ubuntu:20.04 sleep infinity
-docker exec -it airchains bash -c "
+
+
 if [ -d "/data/airchains/evm-station" ]; then
     rm -rf /data/airchains/evm-station
 fi
@@ -413,4 +414,4 @@ function main_menu() {
 
 # 显示主菜单
 main_menu
-
+EOF
