@@ -322,7 +322,7 @@ EOF
     systemctl daemon-reload
     systemctl enable tracksd
     systemctl restart tracksd
-        exit
+        
 EOF
 }
 
