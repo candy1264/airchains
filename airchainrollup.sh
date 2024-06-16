@@ -135,9 +135,6 @@ fi
 # 验证安装后的 Go 版本
 echo "当前 Go 版本："
 go version
-docker run -d --name airchains ubuntu:20.04 sleep infinity
-docker exec -it airchains bash << EOF
-
 
 function install_node() {
 
@@ -372,7 +369,7 @@ sudo pkill -9 availd
 sudo pkill -9 evmosd
 sudo pkill -9 tracksd
 }
-EOF
+
 # 主菜单
 function main_menu() {
     while true; do
