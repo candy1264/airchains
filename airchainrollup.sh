@@ -137,7 +137,7 @@ echo "当前 Go 版本："
 go version
 
 docker run -d --name airchains ubuntu:20.04 sleep infinity
-docker exec -it airchains bash << EOF
+docker exec -it airchains bash -c "
 
 function install_node() {
 
@@ -413,4 +413,4 @@ function main_menu() {
 
 # 显示主菜单
 main_menu
-EOF
+"
