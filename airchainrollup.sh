@@ -208,7 +208,7 @@ fi
     #获取nodeid#
     grep node_id ~/.tracks/config/sequencer.toml
     #修改gas#
-    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(240, 340, [2]int{260, 300}, 0.7)/' /data/airchains/tracks/junction/createStation.go
+    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /data/airchains/tracks/junction/createStation.go
 
     cd /data/airchains/tracks/ && make build
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
