@@ -1,5 +1,4 @@
-docker run -d --name airchains ubuntu:20.04 sleep infinity
-docker exec -it airchains bash << EOF
+
 # 检查 Docker 是否安装
 if ! command -v docker &> /dev/null; then
     echo "Docker 未安装，正在安装 Docker..."
@@ -412,4 +411,3 @@ function main_menu() {
 # 显示主菜单
 main_menu
 
-EOF
