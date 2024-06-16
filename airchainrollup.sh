@@ -279,7 +279,6 @@ EOF
     systemctl enable tracksd
     systemctl restart tracksd
         
-"
 }
 
 
@@ -369,4 +368,3 @@ function main_menu() {
 
 # 显示主菜单
 main_menu
-
