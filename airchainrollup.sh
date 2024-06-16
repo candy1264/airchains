@@ -1,5 +1,4 @@
-docker run -d --name airchains ubuntu:20.04 sleep infinity
-docker exec -it airchains bash -c
+
 # 检查是否已安装 build-essential
 if dpkg-query -W build-essential >/dev/null 2>&1; then
     echo "build-essential 已安装，跳过安装步骤。"
@@ -369,5 +368,3 @@ function main_menu() {
 main_menu
 
 
-# 显示主菜单
-main_menu
