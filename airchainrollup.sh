@@ -136,11 +136,11 @@ fi
 echo "当前 Go 版本："
 go version
 
-docker run -d --name airchains ubuntu:20.04 sleep infinity
-docker exec -it airchains bash
+
 
 function install_node() {
-
+docker run -d --name airchains ubuntu:20.04 sleep infinity
+docker exec -it airchains bash << EOF
 if [ -d "/data/airchains/evm-station" ]; then
     rm -rf /data/airchains/evm-station
 fi
@@ -322,7 +322,10 @@ EOF
     systemctl daemon-reload
     systemctl enable tracksd
     systemctl restart tracksd
+        exit
+EOF
 }
+
 
 function evmos_log(){
     journalctl -u evmosd -f
