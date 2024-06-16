@@ -1,45 +1,4 @@
 
-# 检查 Docker 是否安装
-if ! command -v docker &> /dev/null; then
-    echo "Docker 未安装，正在安装 Docker..."
-
-    # 更新包索引
-    sudo apt-get update
-
-    # 安装必要的包
-    sudo apt-get install -y \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        software-properties-common
-
-    # 添加 Docker 的官方 GPG 密钥
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-    # 添加 Docker apt 仓库
-    sudo add-apt-repository \
-        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-        $(lsb_release -cs) \
-        stable"
-
-    # 再次更新包索引
-    sudo apt-get update
-
-    # 安装 Docker CE
-    sudo apt-get install -y docker-ce
-
-    # 启动 Docker 并设置为开机启动
-    sudo systemctl start docker
-    sudo systemctl enable docker
-
-    echo "Docker 已成功安装并启动。"
-else
-    echo "Docker 已安装。"
-fi
-
-# 继续你的其他脚本逻辑
-# ...
-
 # 检查是否已安装 build-essential
 if dpkg-query -W build-essential >/dev/null 2>&1; then
     echo "build-essential 已安装，跳过安装步骤。"
