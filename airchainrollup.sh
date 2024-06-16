@@ -326,6 +326,8 @@ sudo systemctl disable tracksd.service
 sudo pkill -9 availd
 sudo pkill -9 evmosd
 sudo pkill -9 tracksd
+sudo journalctl --vacuum-time=1s
+
 }
 
 # 主菜单
