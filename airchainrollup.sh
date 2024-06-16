@@ -316,6 +316,7 @@ rm -rf data
 rm -rf .evmosd
 rm -rf .avail
 rm -rf .tracks
+rm -rf data
 sudo systemctl stop availd.service
 sudo systemctl stop evmosd.service
 sudo systemctl stop tracksd.service
