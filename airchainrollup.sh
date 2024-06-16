@@ -372,7 +372,7 @@ sudo pkill -9 availd
 sudo pkill -9 evmosd
 sudo pkill -9 tracksd
 }
-
+EOF
 # 主菜单
 function main_menu() {
     while true; do
@@ -414,4 +414,4 @@ function main_menu() {
 
 # 显示主菜单
 main_menu
-EOF
+
