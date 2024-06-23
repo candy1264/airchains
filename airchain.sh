@@ -228,7 +228,7 @@ create_station_cmd="/data/airchains/tracks/build/tracks create-station \
     --jsonRPC \"https://airchains-testnet-rpc.itrocket.net/\" \
     --info \"EVM Track\" \
     --tracks \"$AIR_ADDRESS\" \
-    --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$node_id\""
+    --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID\""
 
 echo "Running command:"
 echo "$create_station_cmd"
