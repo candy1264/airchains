@@ -185,8 +185,7 @@ LOCAL_IP=$(hostname -I | awk '{print $1}')
     /data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
     
     /data/airchains/tracks/build/tracks prover v1EVM
-    #获取nodeid#
-    grep node_id ~/.tracks/config/sequencer.toml
+    
     #修改gas#
     sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /data/airchains/tracks/junction/createStation.go
     cd /data/airchains/tracks/ && make build
@@ -205,7 +204,8 @@ fi
         # 定义路径#
 CONFIG_PATH="$HOME/.tracks/config/sequencer.toml"
 WALLET_PATH="$HOME/.tracks/junction-accounts/keys/node.wallet.json"
-
+#获取nodeid#
+    grep node_id ~/.tracks/config/sequencer.toml
 # 从配置文件中提取 nodeid
 NODE_ID=$(grep 'node_id =' $CONFIG_PATH | awk -F'"' '{print $2}')
 
