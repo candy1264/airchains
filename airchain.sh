@@ -227,7 +227,7 @@ BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 create_station_cmd="/data/airchains/tracks/build/tracks create-station \
     --accountName node \
     --accountPath $HOME/.tracks/junction-accounts/keys \
-    --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
+    --jsonRPC \"https://junction-testnet-rpc.synergynodes.com/\" \
     --info \"EVM Track\" \
     --tracks \"$AIR_ADDRESS\" \
     --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$node_id\""
