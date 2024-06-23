@@ -142,19 +142,15 @@ cd
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
-#!/bin/bash
 
 key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"
-
-# 检测文件是否存在
 if [ -f "$key_file" ]; then
-    echo "文件 $key_file 已经存在，跳过创建操作"
+    echo "文件 $key_file 已经存在，删除文件"
+    rm -f "$key_file"
 else
-    # 文件不存在时执行的命令
-    #!/bin/bash
-
-# 执行命令
-echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
+    echo "文件 $key_file 不存在，执行创建操作"
+    echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
+fi
 
 # 等待命令执行完毕（可以根据具体情况加入更复杂的判断）
 # 这里假设命令执行后会出现某种特定的输出或状态，作为等待条件
