@@ -281,10 +281,9 @@ sudo systemctl restart tracksd
 }
 
 function delete_node(){
-rm -rf data
-rm -rf .evmosd
-rm -rf .tracks
-rm -rf data
+sudo rm -rf data
+sudo rm -rf .evmosd
+sudo rm -rf .tracks
 sudo systemctl stop evmosd.service
 sudo systemctl stop tracksd.service
 sudo systemctl disable evmosd.service
