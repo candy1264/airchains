@@ -172,7 +172,7 @@ sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
 eigenlayer operator keys create  -i=true --key-type ecdsa node 
 
-json_file="/home/ubuntu/.eigenlayer/operator_keys/node.ecdsa.key.json"
+json_file="/home/.eigenlayer/operator_keys/node.ecdsa.key.json"
 
 # 使用 jq 工具从 JSON 文件中提取公钥值
 public_key=$(jq -r '.public_key_hex' "$json_file")
