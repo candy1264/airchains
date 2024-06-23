@@ -266,45 +266,31 @@ EOF
 function evmos_log(){
     journalctl -u evmosd -f
 }
-function avail_log(){
-    journalctl -u availd -f
 
-}
 function tracks_log(){
     journalctl -u tracksd -f
 }
 function private_key(){
     #evmos私钥#
     cd /data/airchains/evm-station/ &&  /bin/bash ./scripts/local-keys.sh
-    #avail助记词#
-    cat /root/.avail/identity/identity.toml
     #airchain助记词#
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
 
 }
-function check_avail_address(){
-journalctl -u availd |head 
-}
-
 function restart(){
 sudo systemctl restart evmosd
-sudo systemctl restart availd 
 sudo systemctl restart tracksd
 }
 
 function delete_node(){
 rm -rf data
 rm -rf .evmosd
-rm -rf .avail
 rm -rf .tracks
 rm -rf data
-sudo systemctl stop availd.service
 sudo systemctl stop evmosd.service
 sudo systemctl stop tracksd.service
-sudo systemctl disable availd.service
 sudo systemctl disable evmosd.service
 sudo systemctl disable tracksd.service
-sudo pkill -9 availd
 sudo pkill -9 evmosd
 sudo pkill -9 tracksd
 sudo journalctl --vacuum-time=1s
@@ -325,21 +311,17 @@ function main_menu() {
         echo "请选择要执行的操作:"
         echo "1. 安装节点"
         echo "2. 查看evmos状态"
-        echo "3. 查看avail状态"
-        echo "4. 查看tracks状态"
-        echo "5. 导出所有私钥"
-        echo "6. 查看avail地址"
-        echo "7. 删除节点"
+        echo "3. 查看tracks状态"
+        echo "4. 导出所有私钥"
+        echo "5. 删除节点"
         read -p "请输入选项（1-11）: " OPTION
 
         case $OPTION in
         1) install_node ;;
         2) evmos_log ;;
-        3) avail_log ;;
-        4) tracks_log ;;
-        5) private_key ;;
-        6) check_avail_address ;;
-        7) delete_node ;;
+        3) tracks_log ;;
+        4) private_key ;;
+        5) delete_node ;;
         *) echo "无效选项。" ;;
         esac
         echo "按任意键返回主菜单..."
