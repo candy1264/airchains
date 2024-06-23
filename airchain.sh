@@ -170,7 +170,17 @@ cd
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
-eigenlayer operator keys create  -i=true --key-type ecdsa node 
+"
+
+# 检测文件是否存在
+if [ -f "$key_file" ]; then
+    echo "文件 $key_file 已经存在，跳过创建操作"
+else
+    # 文件不存在时执行的命令
+    eigenlayer operator keys create -i=true --key-type ecdsa node
+fi
+
+key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json
 
 json_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"
 
