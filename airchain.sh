@@ -166,7 +166,7 @@ extract_public_key() {
 }
 
 # 调用提取公钥的函数，并将结果存储在变量中，传递提示信息作为参数
-public_key=$(extract_public_key "请输入公钥(上面弹出的public_key_hex): ")
+public_key=$(extract_public_key "")
 
 # 打印提取到的公钥（或者你可以在这里进行其他操作）
 echo "提取到的公钥是: $public_key"
