@@ -173,7 +173,7 @@ else
     exit 1
 fi
     #注意修改 — daKey和 — moniker，moniker默认为node#
-    /data/airchains/tracks/build/tracks init --daRpc "http://127.0.0.1:7000" --daKey "$public_key" --daType "avail" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
+    /data/airchains/tracks/build/tracks init --daRpc "http://disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
     #生成airchains钱包#
     /data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
     
