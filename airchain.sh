@@ -1,3 +1,32 @@
+#!/bin/bash
+
+# 检测 Git 是否已安装
+if command -v git &> /dev/null; then
+    echo "Git 已安装，版本为 $(git --version)"
+else
+    echo "Git 未安装，正在安装..."
+    
+    # 根据操作系统类型使用合适的包管理器安装 Git
+    if [[ -f /etc/redhat-release ]]; then
+        # CentOS/RHEL 系统
+        sudo yum install -y git
+    elif [[ -f /etc/debian_version ]]; then
+        # Debian/Ubuntu 系统
+        sudo apt update
+        sudo apt install -y git
+    else
+        echo "不支持的操作系统"
+        exit 1
+    fi
+
+    # 再次检测是否安装成功
+    if command -v git &> /dev/null; then
+        echo "Git 安装成功，版本为 $(git --version)"
+    else
+        echo "无法安装 Git，请手动安装或者检查网络连接"
+        exit 1
+    fi
+fi
 
 # 检查是否已安装 build-essential
 if dpkg-query -W build-essential >/dev/null 2>&1; then
