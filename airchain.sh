@@ -137,11 +137,12 @@ WantedBy=multi-user.target
 EOF
     systemctl daemon-reload && systemctl enable evmosd
     systemctl restart evmosd
-#
+##
 cd
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
+#!/bin/bash
 
 key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"
 
@@ -150,36 +151,32 @@ if [ -f "$key_file" ]; then
     echo "文件 $key_file 已经存在，跳过创建操作"
 else
     # 文件不存在时执行的命令
-    eigenlayer operator keys create -i=true --key-type ecdsa node
+    #!/bin/bash
+
+# 执行命令
+echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
+
+# 等待命令执行完毕（可以根据具体情况加入更复杂的判断）
+# 这里假设命令执行后会出现某种特定的输出或状态，作为等待条件
+while true; do
+    # 检查命令执行结果，假设这里检查某个文件或状态
+    if [ -f /path/to/some/file ]; then
+        break
+    fi
+    sleep 1
+done
+
+# 执行q指令
+echo "q" | your_program_or_command
+
+
 fi
-#!/bin/bash
 
-# 加密文件和密码
-encrypted_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"
-password="123456"
-
-# 临时文件名
-decrypted_file="/tmp/decrypted_data.json"
-
-# 解密文件
-openssl enc -d -aes-256-cbc -salt -in "$encrypted_file" -out "$decrypted_file" -k "$password"
-
-# 检查解密是否成功
-if [ $? -ne 0 ]; then
-    echo "解密文件失败，请检查密码是否正确。"
-    exit 1
-fi
-
-# 使用 jq 工具从解密后的 JSON 文件中提取公钥值
-public_key=$(jq -r '.public_key_hex' "$decrypted_file")
-
-# 打印提取的公钥值
-echo "Public Key: $public_key"
-
-# 删除解密后的临时文件
-rm "$decrypted_file"
-
-#
+##
+    #部署Tracks服务#
+cd /data/airchains/tracks/ && make build 
+# 调用提取函数
+public_key=$(extract_public_key)
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
 # 检查是否提取到公钥
