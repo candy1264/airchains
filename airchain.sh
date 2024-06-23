@@ -165,13 +165,6 @@ extract_public_key() {
 public_key=$(extract_public_key)
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
-# 检查是否提取到公钥
-if [ -n "$public_key" ]; then
-    echo "Public key found: $public_key"
-else
-    echo "Error: Could not find public key in availd logs"
-    exit 1
-fi
     #注意修改 — daKey和 — moniker，moniker默认为node#
     /data/airchains/tracks/build/tracks init --daRpc "http://disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
     #生成airchains钱包#
