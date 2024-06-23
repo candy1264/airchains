@@ -161,7 +161,7 @@ extract_public_key() {
     local prompt="$1"  # 接受第一个参数作为提示信息
     echo -n "$prompt"  # 输出传入的提示信息，不换行
     read public_key   # 读取用户输入的公钥
-    echo "函数内部读取到的公钥是: $public_key"  # 输出函数内部读取到的公钥
+    echo " $public_key"  # 输出函数内部读取到的公钥
     echo "$public_key"  # 返回用户输入的公钥
 }
 
@@ -169,7 +169,7 @@ extract_public_key() {
 public_key=$(extract_public_key "")
 
 # 打印提取到的公钥（或者你可以在这里进行其他操作）
-echo "提取到的公钥是: $public_key"
+echo "$public_key"
 
 # 添加一个结束标志，确认脚本执行完毕
 echo "脚本执行完毕"
