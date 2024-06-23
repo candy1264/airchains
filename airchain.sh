@@ -156,18 +156,17 @@ else
     echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
 fi
 
-# 定义提取公钥的函数
+# 定义提取公钥的函数，接受一个参数作为提示信息
 extract_public_key() {
-    # 提示用户输入
-    echo -n "请输入公钥(上面弹出的public_key_hex): "
-    read public_key
-    echo "函数内部读取到的公钥是: $public_key"
-    echo "$public_key"
+    local prompt="$1"  # 接受第一个参数作为提示信息
+    echo -n "$prompt"  # 输出传入的提示信息，不换行
+    read public_key   # 读取用户输入的公钥
+    echo "函数内部读取到的公钥是: $public_key"  # 输出函数内部读取到的公钥
+    echo "$public_key"  # 返回用户输入的公钥
 }
 
-# 调用提取公钥的函数，并将结果存储在变量中
-echo "输入上方出现的Public_Key_hex"
-public_key=$(extract_public_key)
+# 调用提取公钥的函数，并将结果存储在变量中，传递提示信息作为参数
+public_key=$(extract_public_key "请输入公钥(上面弹出的public_key_hex): ")
 
 # 打印提取到的公钥（或者你可以在这里进行其他操作）
 echo "提取到的公钥是: $public_key"
