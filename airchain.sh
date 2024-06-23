@@ -166,10 +166,12 @@ WantedBy=multi-user.target
 EOF
     systemctl daemon-reload && systemctl enable evmosd
     systemctl restart evmosd
-#部署eigenda
+cd
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer
-./eigenlayer operator keys create --key-type ecdsa node
-# 指定 JSON 文件路径
+sudo chmod +x eigenlayer
+sudo mv eigenlayer /usr/local/bin/eigenlayer
+eigenlayer operator keys create  -i=true --key-type ecdsa node 
+
 json_file="/home/ubuntu/.eigenlayer/operator_keys/node.ecdsa.key.json"
 
 # 使用 jq 工具从 JSON 文件中提取公钥值
