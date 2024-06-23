@@ -189,9 +189,7 @@ LOCAL_IP=$(hostname -I | awk '{print $1}')
     #获取nodeid#
     grep node_id ~/.tracks/config/sequencer.toml
     #修改gas#
-    sed -i 's/gasFees := fmt.Sprintf("%damf", gas)/gasFees := fmt.Sprintf("%damf", 2*gas)/' "$HOME/tracks/junction/verifyPod.go"
-sed -i 's/gasFees := fmt.Sprintf("%damf", gas)/gasFees := fmt.Sprintf("%damf", 2*gas)/' "$HOME/tracks/junction/validateVRF.go"
-sed -i 's/gasFees := fmt.Sprintf("%damf", gas)/gasFees := fmt.Sprintf("%damf", 3*gas)/' "$HOME/tracks/junction/submitPod.go"
+    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /data/airchains/tracks/junction/createStation.go
     cd /data/airchains/tracks/ && make build
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
     echo "是否领取完成amf？ (yes/no)"
