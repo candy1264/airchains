@@ -166,8 +166,6 @@ done
 echo "q" | your_program_or_command
 
 
-fi
-
 ##
     #部署Tracks服务#
 cd /data/airchains/tracks/ && make build 
