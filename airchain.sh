@@ -180,12 +180,33 @@ else
     eigenlayer operator keys create -i=true --key-type ecdsa node
 fi
 
-key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json
+#!/bin/bash
 
-json_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"
+# 加密文件和密码
+encrypted_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"
+password="your_password"
 
-# 使用 jq 工具从 JSON 文件中提取公钥值
-public_key=$(jq -r '.public_key_hex' "$json_file")
+# 临时文件名
+decrypted_file="/tmp/decrypted_data.json"
+
+# 解密文件
+openssl enc -d -aes-256-cbc -salt -in "$encrypted_file" -out "$decrypted_file" -k "$password"
+
+# 检查解密是否成功
+if [ $? -ne 0 ]; then
+    echo "解密文件失败，请检查密码是否正确。"
+    exit 1
+fi
+
+# 使用 jq 工具从解密后的 JSON 文件中提取公钥值
+public_key=$(jq -r '.public_key_hex' "$decrypted_file")
+
+# 打印提取的公钥值
+echo "Public Key: $public_key"
+
+# 删除解密后的临时文件
+rm "$decrypted_file"
+
 
 # 输出公钥值
 echo "Public Key: $public_key"
