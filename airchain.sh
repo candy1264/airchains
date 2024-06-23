@@ -145,10 +145,17 @@ sudo mv eigenlayer /usr/local/bin/eigenlayer
 # 定义key_file的路径
 key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"  # 替换为你的实际文件路径
 
+#!/bin/bash
+
+# 定义key_file的路径
+key_file="/path/to/your/keyfile"  # 替换为你的实际文件路径
+
 # 检查文件是否存在
 if [ -f "$key_file" ]; then
     echo "文件 $key_file 已经存在，删除文件"
     rm -f "$key_file"
+    echo "删除文件后执行创建操作"
+    echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
 else
     echo "文件 $key_file 不存在，执行创建操作"
     echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
@@ -167,7 +174,6 @@ public_key=$(extract_public_key)
 
 # 打印提取到的公钥（或者你可以在这里进行其他操作）
 echo "提取到的公钥是: $public_key"
-
 
     #部署Tracks服务#
 cd /data/airchains/tracks/ && make build 
