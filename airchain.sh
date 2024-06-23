@@ -181,7 +181,7 @@ cd /data/airchains/tracks/ && make build
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
     #注意修改 — daKey和 — moniker，moniker默认为node#
-    /data/airchains/tracks/build/tracks init --daRpc "http://disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
+    /data/airchains/tracks/build/tracks init --daRpc "disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
     #生成airchains钱包#
     /data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
     
@@ -217,7 +217,7 @@ AIR_ADDRESS=$(jq -r '.address' $WALLET_PATH)
 LOCAL_IP=$(hostname -I | awk '{print $1}')
 
 # 定义 JSON RPC URL 和其他参数
-JSON_RPC="https://airchains-rpc.kubenode.xyz/"
+JSON_RPC="https://airchains-rpc.stakeme.pro/"
 INFO="EVM Track"
 TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
@@ -226,7 +226,7 @@ BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 create_station_cmd="/data/airchains/tracks/build/tracks create-station \
     --accountName node \
     --accountPath $HOME/.tracks/junction-accounts/keys \
-    --jsonRPC \"https://junction-testnet-rpc.synergynodes.com/\" \
+    --jsonRPC \"https://airchains-rpc.stakeme.pro/\" \
     --info \"EVM Track\" \
     --tracks \"$AIR_ADDRESS\" \
     --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$node_id\""
