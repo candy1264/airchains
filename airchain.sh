@@ -142,8 +142,10 @@ cd
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
+# 定义key_file的路径
+key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"  # 替换为你的实际文件路径
 
-key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"
+# 检查文件是否存在
 if [ -f "$key_file" ]; then
     echo "文件 $key_file 已经存在，删除文件"
     rm -f "$key_file"
@@ -152,17 +154,24 @@ else
     echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
 fi
 
-
-    #部署Tracks服务#
-cd /data/airchains/tracks/ && make build 
-# 调用提取函数
+# 定义提取公钥的函数
 extract_public_key() {
     # 提示用户输入
     echo -n "请输入公钥(上面弹出的public_key_hex): "
     read public_key
     echo "$public_key"
 }
+
+# 调用提取公钥的函数，并将结果存储在变量中
 public_key=$(extract_public_key)
+
+# 打印提取到的公钥（或者你可以在这里进行其他操作）
+echo "提取到的公钥是: $public_key"
+
+
+    #部署Tracks服务#
+cd /data/airchains/tracks/ && make build 
+
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
     #注意修改 — daKey和 — moniker，moniker默认为node#
