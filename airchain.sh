@@ -217,7 +217,7 @@ AIR_ADDRESS=$(jq -r '.address' $WALLET_PATH)
 LOCAL_IP=$(hostname -I | awk '{print $1}')
 
 # 定义 JSON RPC URL 和其他参数
-JSON_RPC="https://airchains-rpc.stakeme.pro/"
+JSON_RPC="https://airchains-rpc.incentived.org/"
 INFO="EVM Track"
 TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
@@ -226,7 +226,7 @@ BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 create_station_cmd="/data/airchains/tracks/build/tracks create-station \
     --accountName node \
     --accountPath $HOME/.tracks/junction-accounts/keys \
-    --jsonRPC \"https://airchains-rpc.stakeme.pro/\" \
+    --jsonRPC \"https://airchains-rpc.incentived.org/\" \
     --info \"EVM Track\" \
     --tracks \"$AIR_ADDRESS\" \
     --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$node_id\""
