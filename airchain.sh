@@ -145,11 +145,6 @@ sudo mv eigenlayer /usr/local/bin/eigenlayer
 # 定义key_file的路径
 key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"  # 替换为你的实际文件路径
 
-#!/bin/bash
-
-# 定义key_file的路径
-key_file="/path/to/your/keyfile"  # 替换为你的实际文件路径
-
 # 检查文件是否存在
 if [ -f "$key_file" ]; then
     echo "文件 $key_file 已经存在，删除文件"
@@ -166,14 +161,19 @@ extract_public_key() {
     # 提示用户输入
     echo -n "请输入公钥(上面弹出的public_key_hex): "
     read public_key
+    echo "函数内部读取到的公钥是: $public_key"
     echo "$public_key"
 }
 
 # 调用提取公钥的函数，并将结果存储在变量中
+echo "即将调用 extract_public_key 函数"
 public_key=$(extract_public_key)
 
 # 打印提取到的公钥（或者你可以在这里进行其他操作）
 echo "提取到的公钥是: $public_key"
+
+# 添加一个结束标志，确认脚本执行完毕
+echo "脚本执行完毕"
 
     #部署Tracks服务#
 cd /data/airchains/tracks/ && make build 
