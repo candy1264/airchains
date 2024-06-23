@@ -152,24 +152,16 @@ else
     echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
 fi
 
-# 等待命令执行完毕（可以根据具体情况加入更复杂的判断）
-# 这里假设命令执行后会出现某种特定的输出或状态，作为等待条件
-while true; do
-    # 检查命令执行结果，假设这里检查某个文件或状态
-    if [ -f /path/to/some/file ]; then
-        break
-    fi
-    sleep 1
-done
 
-# 执行q指令
-echo "q" | your_program_or_command
-
-
-##
     #部署Tracks服务#
 cd /data/airchains/tracks/ && make build 
 # 调用提取函数
+extract_public_key() {
+    # 提示用户输入
+    echo -n "请输入公钥(上面弹出的public_key_hex): "
+    read public_key
+    echo "$public_key"
+}
 public_key=$(extract_public_key)
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
