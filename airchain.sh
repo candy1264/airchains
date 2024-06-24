@@ -85,7 +85,7 @@ if command -v go >/dev/null 2>&1; then
     echo "go 已安装，跳过安装步骤。"
 else
     echo "下载并安装 Go..."
-    wget -c https://golang.org/dl/go1.22.3.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+    wget -c https://golang.org/dl/go1.22.4.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
     echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
     source ~/.bashrc
 fi
@@ -95,119 +95,66 @@ echo "当前 Go 版本："
 go version
 
 function install_node() {
+    sudo apt-get update && sudo apt-get install jq build-essential -y
+    cd $HOME
+    git clone https://github.com/airchains-network/wasm-station.git
+    git clone https://github.com/airchains-network/tracks.git
+    cd wasm-station
+    go mod tidy
+    /bin/bash ./scripts/local-setup.sh
 
-
-if [ -d "$HOME/data/airchains/evm-station" ]; then
-    rm -rf $HOME/data/airchains/evm-station
-fi
-
-if [ -d "tracks" ]; then
-    rm -rf tracks
-fi
-
-
-mkdir -p $HOME/data/airchains/ && cd $HOME/data/airchains/
-git clone https://github.com/airchains-network/evm-station.git
-git clone https://github.com/airchains-network/tracks.git
-
-cd $HOME/data/airchains/evm-station  && go mod tidy
-
-# 确保脚本路径正确
-nano ./scripts/local-setup.sh
-/bin/bash ./scripts/local-setup.sh
-
-    #把json-rpc监听地址改为0.0.0.0#
-    sed -i.bak 's@address = "127.0.0.1:8545"@address = "0.0.0.0:8545"@' ~/.evmosd/config/app.toml
-    #修改 — chain-id 为 上一步自定义的CHAINID，默认填写了node，保留1234-1#
-    # 提示用户输入 CHAIN_ID
-read -p "Enter new CHAIN_ID (default: 重复上面修改文档的CHAIN ID 名字加_1234-1): " CHAIN_ID
-CHAIN_ID=${CHAIN_ID:-name_1234-1}  # 设置默认值
-
-    cat > /etc/systemd/system/evmosd.service << EOF
+    sudo tee <<EOF >/dev/null /etc/systemd/system/wasmstationd.service
 [Unit]
-Description=evmosd node
-After=network-online.target
+Description=wasmstationd
+After=network.target
+
 [Service]
-User=root
-WorkingDirectory=$HOME/.evmosd
-ExecStart=$HOME/data/airchains/evm-station/build/station-evm start --metrics "" --log_level "info" --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "$CHAIN_ID"
-Restart=on-failure
-RestartSec=5
-LimitNOFILE=65535
+User=$USER
+ExecStart=$HOME/wasm-station/build/wasmstationd start --api.enable
+Restart=always
+RestartSec=3
+LimitNOFILE=10000
+
 [Install]
 WantedBy=multi-user.target
 EOF
-    systemctl daemon-reload && systemctl enable evmosd
-    systemctl restart evmosd
-##
-cd
+
+    sudo systemctl daemon-reload && \
+    sudo systemctl enable wasmstationd && \
+    sudo systemctl start wasmstationd
+    
+    cd
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
-# 定义key_file的路径
-key_file="$HOME/.eigenlayer/operator_keys/node.ecdsa.key.json"  # 替换为你的实际文件路径
+eigenlayer operator keys create  -i=true --key-type ecdsa wallet
+sudo rm -rf ~/.tracks
+cd $HOME/tracks
+go mod tidy
+#!/bin/bash
 
-# 检查文件是否存在
-if [ -f "$key_file" ]; then
-    echo "文件 $key_file 已经存在，删除文件"
-    rm -f "$key_file"
-    echo "删除文件后执行创建操作"
-    echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
-else
-    echo "文件 $key_file 不存在，执行创建操作"
-    echo "123456" | eigenlayer operator keys create --key-type ecdsa --insecure node
-fi
+# 提示用户输入公钥和节点名
+read -p "请输入Public Key hex: " dakey
+read -p "请输入节点名: " moniker
 
-# 定义提取公钥的函数，接受一个参数作为提示信息
-extract_public_key() {
-    local prompt="$1"  # 接受第一个参数作为提示信息
-    echo -n "$prompt"  # 输出传入的提示信息，不换行
-    read public_key   # 读取用户输入的公钥
-    echo "$public_key"  # 输出函数内部读取到的公钥
-    echo "$public_key"  # 返回用户输入的公钥
-}
+# 执行 Go 命令，替换用户输入的值
+go run cmd/main.go init \
+    --daRpc "disperser-holesky.eigenda.xyz" \
+    --daKey "$dakey" \
+    --daType "eigen" \
+    --moniker "$moniker" \
+    --stationRpc "http://127.0.0.1:26657" \
+    --stationAPI "http://127.0.0.1:1317" \
+    --stationType "wasm"
 
-# 调用提取公钥的函数，并将结果存储在变量中，传递提示信息作为参数
-public_key=$(extract_public_key "")
-
-# 打印提取到的公钥（或者你可以在这里进行其他操作）
-echo "$public_key"
-
-# 添加一个结束标志，确认脚本执行完毕
-echo "脚本执行完毕"
-
-    #部署Tracks服务#
-cd $HOME/data/airchains/tracks/ && make build 
-
-# 获取本机ip地址
-LOCAL_IP=$(hostname -I | awk '{print $1}')
-    #注意修改 — daKey和 — moniker，moniker默认为node#
-    $HOME/data/airchains/tracks/build/tracks init --daRpc "https://disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
-    #生成airchains钱包#
-    $HOME/data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
-    
-    $HOME/data/airchains/tracks/build/tracks prover v1EVM
-    
-    #修改gas#
-    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' $HOME/data/airchains/tracks/junction/createStation.go
-    cd $HOME/data/airchains/tracks/ && make build
-    cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
-    echo "是否领取完成amf？ (yes/no)"
-read answer
-
-if [ "$answer" != "yes" ]; then
-    echo "未完成amf领取，退出脚本。"
-    exit 1  # 可以选择退出脚本或者采取其他操作
-fi
-
-# 继续执行后续的脚本内容...
-
-    #填入刚创建的钱包名字，以及air开头的钱包地址，本地IP地址，上面获取到的nodeid#
-        # 定义路径#
+go run cmd/main.go keys junction --accountName wallet --accountPath $HOME/.tracks/junction-accounts/keys
+nodeid=$(grep "node_id" ~/.tracks/config/sequencer.toml | awk -F '"' '{print $2}')
+ip=$(curl -s4 ifconfig.me/ip)
+bootstrapNode=/ip4/$ip/tcp/2300/p2p/$nodeid
+echo $bootstrapNode
 CONFIG_PATH="$HOME/.tracks/config/sequencer.toml"
 WALLET_PATH="$HOME/.tracks/junction-accounts/keys/node.wallet.json"
-#获取nodeid#
-    grep node_id ~/.tracks/config/sequencer.toml
+
 # 从配置文件中提取 nodeid
 NODE_ID=$(grep 'node_id =' $CONFIG_PATH | awk -F'"' '{print $2}')
 
@@ -223,44 +170,39 @@ INFO="EVM Track"
 TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
-
 # 运行 tracks create-station 命令
-create_station_cmd=" $HOME/data/airchains/tracks/build/tracks create-station \
-    --accountName node \
+create_station_cmd="/data/airchains/tracks/build/tracks create-station \
+    --accountName wallet \
     --accountPath $HOME/.tracks/junction-accounts/keys \
     --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
-    --info \"EVM Track\" \
+    --info \"WASM Track\" \
     --tracks \"$AIR_ADDRESS\" \
     --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID\""
 
 echo "Running command:"
 echo "$create_station_cmd"
+
 # 执行命令
 eval "$create_station_cmd"
-
-    #把Tracks加入守护进程并启动#
-    cat > /etc/systemd/system/tracksd.service << EOF
+sudo tee /etc/systemd/system/stationd.service > /dev/null << EOF
 [Unit]
-Description=tracksd
+Description=station track service
 After=network-online.target
-
 [Service]
-User=root
-WorkingDirectory=$HOME/.tracks
-ExecStart=$HOME/data/airchains/tracks/build/tracks start
-
+User=$USER
+WorkingDirectory=$HOME/tracks/
+ExecStart=$(which go) run cmd/main.go start
 Restart=always
-RestartSec=10
+RestartSec=3
 LimitNOFILE=65535
-SuccessExitStatus=0 1
 [Install]
 WantedBy=multi-user.target
 EOF
-    systemctl daemon-reload
-    systemctl enable tracksd
-    systemctl restart tracksd
-        
+sudo systemctl daemon-reload
+sudo systemctl enable stationd
+sudo systemctl restart stationd
 }
+
 
 
 function evmos_log(){
