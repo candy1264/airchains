@@ -162,6 +162,19 @@ go run cmd/main.go init \
 
 go run cmd/main.go keys junction --accountName wallet --accountPath $HOME/.tracks/junction-accounts/keys
 
+go run cmd/main.go prover v1WASM
+
+# 询问用户是否要继续执行
+read -p "是否已经领水完毕要继续执行？(yes/no): " choice
+
+if [[ "$choice" != "yes" ]]; then
+    echo "脚本已终止。"
+    exit 0
+fi
+
+# 如果用户选择继续，则执行以下操作
+echo "继续执行脚本..."
+
 echo $bootstrapNode
 CONFIG_PATH="$HOME/.tracks/config/sequencer.toml"
 WALLET_PATH="$HOME/.tracks/junction-accounts/keys/wallet.wallet.json"
