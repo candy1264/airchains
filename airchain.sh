@@ -204,8 +204,8 @@ fi
 
     #填入刚创建的钱包名字，以及air开头的钱包地址，本地IP地址，上面获取到的nodeid#
         # 定义路径#
-CONFIG_PATH="root/.tracks/config/sequencer.toml"
-WALLET_PATH="root/.tracks/junction-accounts/keys/node.wallet.json"
+CONFIG_PATH="/root/.tracks/config/sequencer.toml"
+WALLET_PATH="/root/.tracks/junction-accounts/keys/node.wallet.json"
 #获取nodeid#
     grep node_id ~/.tracks/config/sequencer.toml
 # 从配置文件中提取 nodeid
@@ -226,7 +226,7 @@ BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 # 运行 tracks create-station 命令
 create_station_cmd="/root/data/airchains/tracks/build/tracks create-station \
     --accountName node \
-    --accountPath root/.tracks/junction-accounts/keys \
+    --accountPath /root/.tracks/junction-accounts/keys \
     --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
     --info \"EVM Track\" \
     --tracks \"$AIR_ADDRESS\" \
