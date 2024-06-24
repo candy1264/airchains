@@ -224,20 +224,8 @@ TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
 # 运行 tracks create-station 命令
-create_station_cmd="/root/data/airchains/tracks/build/tracks create-station \
-    --accountName node \
-    --accountPath /root/.tracks/junction-accounts/keys \
-    --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
-    --info \"EVM Track\" \
-    --tracks \"$AIR_ADDRESS\" \
-    --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID\""
+/root/data/airchains/tracks/build/tracks create-station --accountName node --accountPath /root/.tracks/junction-accounts/keys --jsonRPC "https://airchains-rpc.kubenode.xyz/" --info "EVM Track" --tracks "$AIR_ADDRESS" --bootstrapNode "/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
-echo "Running command:"
-echo "$create_station_cmd"
-
-# 执行命令
-eval "$create_station_cmd"
-cd /root/data/airchains/tracks/ && make build
     #把Tracks加入守护进程并启动#
     cat > /etc/systemd/system/tracksd.service << EOF
 [Unit]
