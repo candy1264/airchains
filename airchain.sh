@@ -191,7 +191,7 @@ LOCAL_IP=$(hostname -I | awk '{print $1}')
     #修改gas#
     sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /root/data/airchains/tracks/junction/createStation.go
     cd /root/data/airchains/tracks/ && make build
-    cat root/.tracks/junction-accounts/keys/node.wallet.json
+    cat /root/.tracks/junction-accounts/keys/node.wallet.json
     echo "是否领取完成amf？ (yes/no)"
 read answer
 
