@@ -223,7 +223,7 @@ INFO="EVM Track"
 TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
-# 运行 tracks create-station 命令
+
 # 运行 tracks create-station 命令
 create_station_cmd="/data/airchains/tracks/build/tracks create-station \
     --accountName node \
@@ -235,6 +235,8 @@ create_station_cmd="/data/airchains/tracks/build/tracks create-station \
 
 echo "Running command:"
 echo "$create_station_cmd"
+# 执行命令
+eval "$create_station_cmd"
 
     #把Tracks加入守护进程并启动#
     cat > /etc/systemd/system/tracksd.service << EOF
