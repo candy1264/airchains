@@ -231,7 +231,7 @@ create_station_cmd="$HOME/data/airchains/tracks/build/tracks create-station \
     --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
     --info \"EVM Track\" \
     --tracks \"$AIR_ADDRESS\" \
-    --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$node_id\""
+    --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID\""
 
 echo "Running command:"
 echo "$create_station_cmd"
@@ -274,7 +274,7 @@ function private_key(){
     #evmos私钥#
     cd $HOME/data/airchains/evm-station/ &&  /bin/bash ./scripts/local-keys.sh
     #airchain助记词#
-    cat root/.tracks/junction-accounts/keys/node.wallet.json
+    cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
 
 }
 function restart(){
