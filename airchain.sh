@@ -104,6 +104,8 @@ fi
 if [ -d "tracks" ]; then
     rm -rf tracks
 fi
+
+
 mkdir -p /data/airchains/ && cd /data/airchains/
 git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
