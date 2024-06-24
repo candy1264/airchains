@@ -182,7 +182,7 @@ cd /root/data/airchains/tracks/ && make build
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
     #注意修改 — daKey和 — moniker，moniker默认为node#
-    /root/data/airchains/tracks/build/tracks init --daRpc "disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
+    /root/data/airchains/tracks/build/tracks init --daRpc "https://disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
     #生成airchains钱包#
     /root/data/airchains/tracks/build/tracks keys junction --accountName node --accountPath /root/.tracks/junction-accounts/keys
     
