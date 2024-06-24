@@ -233,8 +233,8 @@ function evmos_log(){
     journalctl -u evmosd -f
 }
 
-function tracks_log(){
-    journalctl -u tracksd -f
+function stationd_log(){
+    journalctl -u stationd -f
 }
 function private_key(){
     #evmos私钥#
@@ -252,12 +252,12 @@ function delete_node(){
 sudo rm -rf data
 sudo rm -rf .evmosd
 sudo rm -rf .tracks
-sudo systemctl stop evmosd.service
-sudo systemctl stop tracksd.service
-sudo systemctl disable evmosd.service
-sudo systemctl disable tracksd.service
-sudo pkill -9 evmosd
-sudo pkill -9 tracksd
+sudo systemctl stop wasmstationd.service
+sudo systemctl stop stationd.service
+sudo systemctl disable wasmstationd.service
+sudo systemctl disable stationd.service
+sudo pkill -9 wasmstationd
+sudo pkill -9 stationd
 sudo journalctl --vacuum-time=1s
 
 }
@@ -267,7 +267,7 @@ function main_menu() {
     while true; do
         clear
         echo "脚本由大赌社区candy编写，推特 @ccaannddyy11，免费开源，请勿相信收费"
-        echo "特别鸣谢 @TestnetCn @y95277777"
+        echo "特别鸣谢 @TestnetCn @y95277777 @EthExploring"
         echo "================================================================"
         echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
         echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
@@ -275,16 +275,16 @@ function main_menu() {
         echo "退出脚本，请按键盘ctrl c退出即可"
         echo "请选择要执行的操作:"
         echo "1. 安装节点"
-        echo "2. 查看evmos状态"
-        echo "3. 查看tracks状态"
+        echo "2. 查看wasmstationd状态"
+        echo "3. 查看stationd状态"
         echo "4. 导出所有私钥"
         echo "5. 删除节点"
         read -p "请输入选项（1-11）: " OPTION
 
         case $OPTION in
         1) install_node ;;
-        2) evmos_log ;;
-        3) tracks_log ;;
+        2) wasmstationd_log ;;
+        3) stationd_log ;;
         4) private_key ;;
         5) delete_node ;;
         *) echo "无效选项。" ;;
