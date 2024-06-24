@@ -148,9 +148,7 @@ go run cmd/main.go init \
     --stationType "wasm"
 
 go run cmd/main.go keys junction --accountName wallet --accountPath $HOME/.tracks/junction-accounts/keys
-nodeid=$(grep "node_id" ~/.tracks/config/sequencer.toml | awk -F '"' '{print $2}')
-ip=$(curl -s4 ifconfig.me/ip)
-bootstrapNode=/ip4/$ip/tcp/2300/p2p/$nodeid
+
 echo $bootstrapNode
 CONFIG_PATH="$HOME/.tracks/config/sequencer.toml"
 WALLET_PATH="$HOME/.tracks/junction-accounts/keys/wallet.wallet.json"
@@ -171,7 +169,7 @@ TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
 # 运行 tracks create-station 命令
-create_station_cmd="/data/airchains/tracks/build/tracks create-station \
+create_station_cmd="go run cmd/main.go create-station \
     --accountName wallet \
     --accountPath $HOME/.tracks/junction-accounts/keys \
     --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
