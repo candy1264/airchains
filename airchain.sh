@@ -189,7 +189,7 @@ LOCAL_IP=$(hostname -I | awk '{print $1}')
     /root/data/airchains/tracks/build/tracks prover v1EVM
     
     #修改gas#
-    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /data/airchains/tracks/junction/createStation.go
+    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /root/data/airchains/tracks/junction/createStation.go
     cd /root/data/airchains/tracks/ && make build
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
     echo "是否领取完成amf？ (yes/no)"
@@ -224,7 +224,7 @@ TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
 # 运行 tracks create-station 命令
-create_station_cmd="/data/airchains/tracks/build/tracks create-station \
+create_station_cmd="/root/data/airchains/tracks/build/tracks create-station \
     --accountName node \
     --accountPath $HOME/.tracks/junction-accounts/keys \
     --jsonRPC \"https://airchains-testnet-rpc.itrocket.net/\" \
@@ -237,7 +237,7 @@ echo "$create_station_cmd"
 
 # 执行命令
 eval "$create_station_cmd"
-cd /data/airchains/tracks/ && make build
+cd /root/data/airchains/tracks/ && make build
     #把Tracks加入守护进程并启动#
     cat > /etc/systemd/system/tracksd.service << EOF
 [Unit]
@@ -247,7 +247,7 @@ After=network-online.target
 [Service]
 User=root
 WorkingDirectory=/root/.tracks
-ExecStart=/data/airchains/tracks/build/tracks start
+ExecStart=/root/data/airchains/tracks/build/tracks start
 
 Restart=always
 RestartSec=10
@@ -272,7 +272,7 @@ function tracks_log(){
 }
 function private_key(){
     #evmos私钥#
-    cd /data/airchains/evm-station/ &&  /bin/bash ./scripts/local-keys.sh
+    cd /root/data/airchains/evm-station/ &&  /bin/bash ./scripts/local-keys.sh
     #airchain助记词#
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
 
