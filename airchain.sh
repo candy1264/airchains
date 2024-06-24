@@ -127,7 +127,20 @@ EOF
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
-eigenlayer operator keys create  -i=true --key-type ecdsa wallet
+# 定义文件路径
+KEY_FILE="$HOME/.eigenlayer/operator_keys/test.ecdsa.key.json"
+# 检查文件是否存在
+if [ -f "$KEY_FILE" ]; then
+    echo "文件 $KEY_FILE 已经存在，删除文件"
+    rm -f "$KEY_FILE"
+    # 执行创建密钥命令
+    echo "123" | eigenlayer operator keys create --key-type ecdsa --insecure wallet
+else
+    echo "文件 $KEY_FILE 不存在，执行创建密钥操作"
+    # 执行创建密钥命令
+    echo "123" | eigenlayer operator keys create --key-type ecdsa --insecure wallet
+fi
+
 sudo rm -rf ~/.tracks
 cd $HOME/tracks
 go mod tidy
