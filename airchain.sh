@@ -97,8 +97,8 @@ go version
 function install_node() {
 
 
-if [ -d "/data/airchains/evm-station" ]; then
-    rm -rf /data/airchains/evm-station
+if [ -d "/root/data/airchains/evm-station" ]; then
+    rm -rf /root/data/airchains/evm-station
 fi
 
 if [ -d "tracks" ]; then
@@ -106,11 +106,11 @@ if [ -d "tracks" ]; then
 fi
 
 
-mkdir -p /root/data/airchains/ && cd /data/airchains/
+mkdir -p /root/data/airchains/ && cd /root/data/airchains/
 git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
 
-cd /data/airchains/evm-station  && go mod tidy
+cd /root/data/airchains/evm-station  && go mod tidy
 
 # 确保脚本路径正确
 nano ./scripts/local-setup.sh
@@ -130,7 +130,7 @@ After=network-online.target
 [Service]
 User=root
 WorkingDirectory=/root/.evmosd
-ExecStart=/data/airchains/evm-station/build/station-evm start --metrics "" --log_level "info" --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "$CHAIN_ID"
+ExecStart=/root/data/airchains/evm-station/build/station-evm start --metrics "" --log_level "info" --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "$CHAIN_ID"
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
