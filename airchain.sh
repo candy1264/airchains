@@ -97,8 +97,8 @@ go version
 function install_node() {
 
 
-if [ -d "/root/data/airchains/evm-station" ]; then
-    rm -rf /root/data/airchains/evm-station
+if [ -d "/$home/data/airchains/evm-station" ]; then
+    rm -rf /$home/data/airchains/evm-station
 fi
 
 if [ -d "tracks" ]; then
@@ -106,11 +106,11 @@ if [ -d "tracks" ]; then
 fi
 
 
-mkdir -p /root/data/airchains/ && cd /root/data/airchains/
+mkdir -p /$home/data/airchains/ && cd /$home/data/airchains/
 git clone https://github.com/airchains-network/evm-station.git
 git clone https://github.com/airchains-network/tracks.git
 
-cd /root/data/airchains/evm-station  && go mod tidy
+cd /$home/data/airchains/evm-station  && go mod tidy
 
 # 确保脚本路径正确
 nano ./scripts/local-setup.sh
@@ -129,8 +129,8 @@ Description=evmosd node
 After=network-online.target
 [Service]
 User=root
-WorkingDirectory=/root/.evmosd
-ExecStart=/root/data/airchains/evm-station/build/station-evm start --metrics "" --log_level "info" --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "$CHAIN_ID"
+WorkingDirectory=/$home/.evmosd
+ExecStart=/$home/data/airchains/evm-station/build/station-evm start --metrics "" --log_level "info" --json-rpc.api eth,txpool,personal,net,debug,web3 --chain-id "$CHAIN_ID"
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
@@ -145,7 +145,7 @@ wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenl
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
 # 定义key_file的路径
-key_file="/root/.eigenlayer/operator_keys/node.ecdsa.key.json"  # 替换为你的实际文件路径
+key_file="/$home/.eigenlayer/operator_keys/node.ecdsa.key.json"  # 替换为你的实际文件路径
 
 # 检查文件是否存在
 if [ -f "$key_file" ]; then
@@ -177,20 +177,20 @@ echo "$public_key"
 echo "脚本执行完毕"
 
     #部署Tracks服务#
-cd /root/data/airchains/tracks/ && make build 
+cd /$home/data/airchains/tracks/ && make build 
 
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
     #注意修改 — daKey和 — moniker，moniker默认为node#
-    /root/data/airchains/tracks/build/tracks init --daRpc "disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
+    /$home/data/airchains/tracks/build/tracks init --daRpc "disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
     #生成airchains钱包#
-    /root/data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
+    /$home/data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
     
-    /root/data/airchains/tracks/build/tracks prover v1EVM
+    /$home/data/airchains/tracks/build/tracks prover v1EVM
     
     #修改gas#
-    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /root/data/airchains/tracks/junction/createStation.go
-    cd /root/data/airchains/tracks/ && make build
+    sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /$home/data/airchains/tracks/junction/createStation.go
+    cd /$home/data/airchains/tracks/ && make build
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
     echo "是否领取完成amf？ (yes/no)"
 read answer
@@ -224,7 +224,7 @@ TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 
 # 运行 tracks create-station 命令
-create_station_cmd="/root/data/airchains/tracks/build/tracks create-station \
+create_station_cmd="/$home/data/airchains/tracks/build/tracks create-station \
     --accountName node \
     --accountPath $HOME/.tracks/junction-accounts/keys \
     --jsonRPC \"https://airchains-testnet-rpc.itrocket.net/\" \
@@ -237,7 +237,7 @@ echo "$create_station_cmd"
 
 # 执行命令
 eval "$create_station_cmd"
-cd /root/data/airchains/tracks/ && make build
+cd /$home/data/airchains/tracks/ && make build
     #把Tracks加入守护进程并启动#
     cat > /etc/systemd/system/tracksd.service << EOF
 [Unit]
@@ -246,8 +246,8 @@ After=network-online.target
 
 [Service]
 User=root
-WorkingDirectory=/root/.tracks
-ExecStart=/root/data/airchains/tracks/build/tracks start
+WorkingDirectory=/$home/.tracks
+ExecStart=/$home/data/airchains/tracks/build/tracks start
 
 Restart=always
 RestartSec=10
@@ -272,7 +272,7 @@ function tracks_log(){
 }
 function private_key(){
     #evmos私钥#
-    cd /root/data/airchains/evm-station/ &&  /bin/bash ./scripts/local-keys.sh
+    cd /$home/data/airchains/evm-station/ &&  /bin/bash ./scripts/local-keys.sh
     #airchain助记词#
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
 
