@@ -153,7 +153,7 @@ ip=$(curl -s4 ifconfig.me/ip)
 bootstrapNode=/ip4/$ip/tcp/2300/p2p/$nodeid
 echo $bootstrapNode
 CONFIG_PATH="$HOME/.tracks/config/sequencer.toml"
-WALLET_PATH="$HOME/.tracks/junction-accounts/keys/node.wallet.json"
+WALLET_PATH="$HOME/.tracks/junction-accounts/keys/wallet.wallet.json"
 
 # 从配置文件中提取 nodeid
 NODE_ID=$(grep 'node_id =' $CONFIG_PATH | awk -F'"' '{print $2}')
@@ -216,7 +216,7 @@ function private_key(){
     #evmos私钥#
     cd $HOME/data/airchains/evm-station/ &&  /bin/bash ./scripts/local-keys.sh
     #airchain助记词#
-    cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
+    cat $HOME/.tracks/junction-accounts/keys/wallet.wallet.json
 
 }
 function restart(){
