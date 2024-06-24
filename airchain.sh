@@ -128,7 +128,7 @@ wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenl
 sudo chmod +x eigenlayer
 sudo mv eigenlayer /usr/local/bin/eigenlayer
 # 定义文件路径
-KEY_FILE="$HOME/.eigenlayer/operator_keys/test.ecdsa.key.json"
+KEY_FILE="$HOME/.eigenlayer/operator_keys/wallet.ecdsa.key.json"
 # 检查文件是否存在
 if [ -f "$KEY_FILE" ]; then
     echo "文件 $KEY_FILE 已经存在，删除文件"
