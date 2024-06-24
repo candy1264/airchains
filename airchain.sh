@@ -250,7 +250,7 @@ sudo systemctl restart tracksd
 
 function delete_node(){
 sudo rm -rf data
-sudo rm -rf .evmosd
+sudo rm -rf .wasmstationd
 sudo rm -rf .tracks
 sudo systemctl stop wasmstationd.service
 sudo systemctl stop stationd.service
