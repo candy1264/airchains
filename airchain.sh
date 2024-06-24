@@ -177,20 +177,20 @@ echo "$public_key"
 echo "脚本执行完毕"
 
     #部署Tracks服务#
-cd /data/airchains/tracks/ && make build 
+cd /root/data/airchains/tracks/ && make build 
 
 # 获取本机ip地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
     #注意修改 — daKey和 — moniker，moniker默认为node#
-    /data/airchains/tracks/build/tracks init --daRpc "disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
+    /root/data/airchains/tracks/build/tracks init --daRpc "disperser-holesky.eigenda.xyz" --daKey "$public_key" --daType "eigen" --moniker "$MONIKER" --stationRpc "http://$LOCAL_IP:8545" --stationAPI "http://$LOCAL_IP:8545" --stationType "evm"
     #生成airchains钱包#
-    /data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
+    /root/data/airchains/tracks/build/tracks keys junction --accountName node --accountPath $HOME/.tracks/junction-accounts/keys
     
-    /data/airchains/tracks/build/tracks prover v1EVM
+    /root/data/airchains/tracks/build/tracks prover v1EVM
     
     #修改gas#
     sed -i.bak 's/utilis\.GenerateRandomWithFavour(1200, 2400, \[2\]int{1500, 2000}, 0\.7)/utilis.GenerateRandomWithFavour(2400, 3400, [2]int{2600, 5000}, 0.7)/' /data/airchains/tracks/junction/createStation.go
-    cd /data/airchains/tracks/ && make build
+    cd /root/data/airchains/tracks/ && make build
     cat $HOME/.tracks/junction-accounts/keys/node.wallet.json
     echo "是否领取完成amf？ (yes/no)"
 read answer
