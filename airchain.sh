@@ -163,7 +163,10 @@ go run cmd/main.go init \
 #!/bin/bash
 
 # 提示用户选择操作
-echo "你需要创建新地址吗？（Y/N）"
+echo "你需要创建新地址吗？（Y/N/S）"
+echo "Y: 创建新地址"
+echo "N: 导入地址"
+echo "S: 跳过"
 read -r response
 
 # 将用户输入转换为大写
@@ -177,10 +180,13 @@ elif [[ "$response" == "N" ]]; then
     echo "请输入你的助记词："
     read -r mnemonic
     echo "正在导入地址..."
-    go run cmd/main.go keys import --accountName wallet --accountPath "$HOME/.tracks/junction-accounts/keys" --mnemonic "$mnemonic"
+    go run cmd/main.go keys import --accountName mySequencerAccount --accountPath "$HOME/.tracks/junction-accounts/keys" --mnemonic "$mnemonic"
+elif [[ "$response" == "S" ]]; then
+    echo "已跳过创建或导入地址的步骤。"
 else
-    echo "无效的输入，请输入“Y”或“N”。"
+    echo "无效的输入，请输入“Y”、“N”或“S”。"
 fi
+
 
 
 go run cmd/main.go prover v1WASM
@@ -210,7 +216,7 @@ AIR_ADDRESS=$(jq -r '.address' $WALLET_PATH)
 LOCAL_IP=$(hostname -I | awk '{print $1}')
 
 # 定义 JSON RPC URL 和其他参数
-JSON_RPC="https://airchains-rpc.kubenode.xyz/"
+JSON_RPC="https://airchains-rpc-testnet.zulnaaa.com/"
 INFO="EVM Track"
 TRACKS="air_address"
 BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
@@ -219,7 +225,7 @@ BOOTSTRAP_NODE="/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID"
 create_station_cmd="go run cmd/main.go create-station \
     --accountName wallet \
     --accountPath $HOME/.tracks/junction-accounts/keys \
-    --jsonRPC \"https://airchains-rpc.kubenode.xyz/\" \
+    --jsonRPC \"https://airchains-rpc-testnet.zulnaaa.com/\" \
     --info \"WASM Track\" \
     --tracks \"$AIR_ADDRESS\" \
     --bootstrapNode \"/ip4/$LOCAL_IP/tcp/2300/p2p/$NODE_ID\""
