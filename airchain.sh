@@ -204,23 +204,24 @@ echo "继续执行脚本..."
 
 echo $bootstrapNode
 CONFIG_PATH="$HOME/.tracks/config/sequencer.toml"
+# 定义初始 WALLET_PATH
 WALLET_PATH="$HOME/.tracks/junction-accounts/keys/wallet.wallet.json"
 
 # 检查 WALLET_PATH 是否存在
 if [ -f "$WALLET_PATH" ]; then
-    echo "钱包文件存在，继续执行..."
+    echo "钱包文件存在，从钱包文件中提取地址..."
+    AIR_ADDRESS=$(jq -r '.address' "$WALLET_PATH")
 else
     echo "钱包文件不存在，请输入钱包地址："
-    read -r wallet_address
-    echo "你输入的钱包地址是: $wallet_address"
-    # 此处可以根据需要保存或使用用户输入的钱包地址
+    read -r AIR_ADDRESS
+    echo "你输入的钱包地址是: $AIR_ADDRESS"
 fi
+
 
 # 从配置文件中提取 nodeid
 NODE_ID=$(grep 'node_id =' $CONFIG_PATH | awk -F'"' '{print $2}')
 
-# 从钱包文件中提取 air 开头的钱包地址
-AIR_ADDRESS=$(jq -r '.address' $WALLET_PATH)
+
 
 # 获取本机 IP 地址
 LOCAL_IP=$(hostname -I | awk '{print $1}')
