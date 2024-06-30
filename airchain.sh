@@ -160,7 +160,28 @@ go run cmd/main.go init \
     --stationAPI "http://127.0.0.1:1317" \
     --stationType "wasm"
 
-go run cmd/main.go keys junction --accountName wallet --accountPath $HOME/.tracks/junction-accounts/keys
+#!/bin/bash
+
+# 提示用户选择操作
+echo "你需要创建新地址吗？（Y/N）"
+read -r response
+
+# 将用户输入转换为大写
+response=$(echo "$response" | tr '[:lower:]' '[:upper:]')
+
+# 根据用户输入执行相应命令
+if [[ "$response" == "Y" ]]; then
+    echo "正在创建新地址..."
+    go run cmd/main.go keys junction --accountName wallet --accountPath "$HOME/.tracks/junction-accounts/keys"
+elif [[ "$response" == "N" ]]; then
+    echo "请输入你的助记词："
+    read -r mnemonic
+    echo "正在导入地址..."
+    go run cmd/main.go keys import --accountName wallet --accountPath "$HOME/.tracks/junction-accounts/keys" --mnemonic "$mnemonic"
+else
+    echo "无效的输入，请输入“Y”或“N”。"
+fi
+
 
 go run cmd/main.go prover v1WASM
 
