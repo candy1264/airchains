@@ -180,7 +180,7 @@ elif [[ "$response" == "N" ]]; then
     echo "请输入你的助记词："
     read -r mnemonic
     echo "正在导入地址..."
-    go run cmd/main.go keys import --accountName mySequencerAccount --accountPath "$HOME/.tracks/junction-accounts/keys" --mnemonic "$mnemonic"
+    go run cmd/main.go keys import --accountName wallet --accountPath "$HOME/.tracks/junction-accounts/keys" --mnemonic "$mnemonic"
 elif [[ "$response" == "S" ]]; then
     echo "已跳过创建或导入地址的步骤。"
 else
