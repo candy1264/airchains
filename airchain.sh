@@ -206,6 +206,16 @@ echo $bootstrapNode
 CONFIG_PATH="$HOME/.tracks/config/sequencer.toml"
 WALLET_PATH="$HOME/.tracks/junction-accounts/keys/wallet.wallet.json"
 
+# 检查 WALLET_PATH 是否存在
+if [ -f "$WALLET_PATH" ]; then
+    echo "钱包文件存在，继续执行..."
+else
+    echo "钱包文件不存在，请输入钱包地址："
+    read -r wallet_address
+    echo "你输入的钱包地址是: $wallet_address"
+    # 此处可以根据需要保存或使用用户输入的钱包地址
+fi
+
 # 从配置文件中提取 nodeid
 NODE_ID=$(grep 'node_id =' $CONFIG_PATH | awk -F'"' '{print $2}')
 
