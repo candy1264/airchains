@@ -286,7 +286,8 @@ function evmos_log(){
 }
 
 function stationd_log(){
-    journalctl -u stationd -f
+    sudo journalctl -u stationd -f -o cat
+
 }
 function private_key(){
     #evmos私钥#
