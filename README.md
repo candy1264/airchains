@@ -10,3 +10,5 @@
 wget -O airchainrollup.sh https://raw.githubusercontent.com/candy1264/airchains/main/airchainrollup.sh && chmod +x airchainrollup.sh && ./airchainrollup.sh
 一键运行eigenda版本:
 wget -O airchain.sh https://raw.githubusercontent.com/candy1264/airchains/main/airchain.sh&& chmod +x airchain.sh && ./airchain.sh
+eigenda+evmosd版本，强烈推荐！
+wget -O airchainevm.sh https://raw.githubusercontent.com/candy1264/airchains/main/airchainevm.sh&& chmod +x airchainevm.sh && ./airchainevm.sh
