@@ -179,7 +179,7 @@ function main_menu() {
     while true; do
         clear
         echo "脚本由大赌社区candy编写，推特 @ccaannddyy11，免费开源，请勿相信收费"
-        echo "特别鸣谢 @TestnetCn @y95277777"
+        echo "特别鸣谢 @TestnetCn @y95277777 @EthExploring"
         echo "================================================================"
         echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
         echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
