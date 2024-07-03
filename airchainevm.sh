@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 检查是否已安装 build-essential
 if dpkg-query -W build-essential >/dev/null 2>&1; then
     echo "build-essential 已安装，跳过安装步骤。"
@@ -85,13 +87,13 @@ if command -v go >/dev/null 2>&1; then
 else
     echo "下载并安装 Go..."
     wget -c https://golang.org/dl/go1.22.3.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
-    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+    if ! grep -q 'export PATH=$PATH:/usr/local/go/bin' ~/.bashrc; then
+        echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+    fi
     source ~/.bashrc
 fi
 
-# 验证安装后的 Go 版本
-echo "当前 Go 版本："
-go version
+echo "所有软件包检查和安装完成。"
 
 function install_node() {
 
