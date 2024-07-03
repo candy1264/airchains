@@ -80,10 +80,6 @@ else
     sudo apt install -y wget
 fi
 
-    wget -c https://golang.org/dl/go1.22.3.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
-    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-    source ~/.bashrc
-go version
 
 function install_node() {
 
