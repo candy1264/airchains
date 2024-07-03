@@ -267,8 +267,9 @@ sudo systemctl restart stationd
 
 
 
-function evmos_log(){
-    journalctl -u evmosd -f
+function wasmstationd_log(){
+    sudo journalctl -u wasmstationd -f
+
 }
 
 function stationd_log(){
