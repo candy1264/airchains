@@ -80,15 +80,9 @@ else
     sudo apt install -y wget
 fi
 
-# 检查是否已安装 go
-if command -v go >/dev/null 2>&1; then
-    echo "go 已安装，跳过安装步骤。"
-else
-    echo "下载并安装 Go..."
     wget -c https://golang.org/dl/go1.22.3.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
     echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
     source ~/.bashrc
-fi
 
 # 验证安装后的 Go 版本
 echo "当前 Go 版本："
