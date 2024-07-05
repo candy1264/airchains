@@ -189,7 +189,7 @@ function main_menu() {
         echo "1. 安装节点"
         echo "2. 查看evmos状态"
         echo "3. 查看stationd状态"
-        echo "4. 导出所有私钥"
+        echo "4. 导出evm私钥和air助记词（第一行为evm私钥，第二行开始为air的助记词）"
         echo "5. 查看avail地址"
         echo "6. 删除节点"
         read -p "请输入选项（1-6）: " OPTION
